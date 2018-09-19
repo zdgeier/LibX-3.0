@@ -19,9 +19,14 @@ module.exports = {
     // This transpiles all code (except for third party modules) using Babel.
     rules: [{
       exclude: /node_modules/,
-      test: /\.js$/,
+      test: /\.(js|jsx)$/,
       // Babel options are in .babelrc
       use: ['babel-loader'],
+    },
+    {
+      test: /\.js$/,
+      exclude: /node_modules/,
+      use: ['eslint-loader']
     }],
   },
   resolve: {

@@ -91,4 +91,9 @@ class MainContent extends React.Component {
   }
 }
 
+MainContent.propTypes = {
+  classes: PropTypes.any,
+  theme: PropTypes.any,
+}
+
 export default MainContent;
