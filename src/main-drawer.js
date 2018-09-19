@@ -12,9 +12,8 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import { mailFolderListItems } from './tileData';
+import { ViewIcons } from './view-icons';
 import MainContent from './main-content';
-import Demo from './demo';
 
 const drawerWidth = 240;
 
@@ -86,7 +85,6 @@ const styles = theme => ({
 class MiniDrawer extends React.Component {
   state = {
     open: false,
-    database: 'Addison',
   };
 
   handleDrawerOpen = () => {
@@ -133,11 +131,11 @@ class MiniDrawer extends React.Component {
             </IconButton>
           </div>
           <Divider />
-          <List>{mailFolderListItems}</List>
+          <List>{ViewIcons}</List>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <Demo></Demo>
+          <MainContent></MainContent>
         </main>
       </div>
     );

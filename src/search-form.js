@@ -1,6 +1,6 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
-import TextField from "./FormikTextField";
+import TextField from "./search-text-field";
 import { Formik, Form, FastField as Field } from "formik";
 import Button from "@material-ui/core/Button";
 import * as Yup from "yup";
@@ -53,8 +53,13 @@ class TextFields extends React.Component {
         onSubmit={onSubmit}
         render={({ errors, dirty, isSubmitting }) => (
           <Form>
+            <Field name="keyword" label="Keyword" component={TextField} />
             <Field name="title" label="Title" component={TextField} />
-            <Field name="tootle" label="Tootle" component={TextField} />
+            <Field name="journal-title" label="Journal Title" component={TextField} />
+            <Field name="author" label="Author" component={TextField} />
+            <Field name="subject" label="Subject" component={TextField} />
+            <Field name="isbn" label="ISBN/ISSN" component={TextField} />
+            <Field name="call-number" label="Call Number" component={TextField} />
 
             <Button
               type="submit"

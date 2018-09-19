@@ -1,22 +1,38 @@
 // This file is shared across the demos.
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import DraftsIcon from '@material-ui/icons/Drafts';
+import DraftsIcon from '@material-ui/icons/L';
 import StarIcon from '@material-ui/icons/Star';
 import SendIcon from '@material-ui/icons/Send';
 import SearchIcon from '@material-ui/icons/Search';
 
-export const mailFolderListItems = (
-  <div>
+const LibXListItem = (props) => {
+  return (
     <ListItem button>
       <ListItemIcon>
-        <SearchIcon />
+        {props.children}
       </ListItemIcon>
-      <ListItemText primary="Search" />
+      <ListItemText primary={props.text} />
     </ListItem>
+  );
+}
+
+LibXListItem.propTypes = {
+  children: PropTypes.any,
+  text: PropTypes.text,
+}
+
+export const ViewIcons = (
+  <div>
+    <LibXListItem text="Search"><SearchIcon/></LibXListItem>
+    <LibXListItem text="Links"></LibXListItem>
+    <LibXListItem text="Search1"><SearchIcon/></LibXListItem>
+    <LibXListItem text="Search1"><SearchIcon/></LibXListItem>
+    <LibXListItem text="Search1"><SearchIcon/></LibXListItem>
     <ListItem button>
       <ListItemIcon>
         <StarIcon />
