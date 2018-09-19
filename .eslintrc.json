@@ -1,6 +1,5 @@
 {
   "parserOptions": {
-    "ecmaVersion": 6,
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
@@ -12,8 +11,20 @@
     "amd": true,
     "webextensions": true
   },
+  "settings": {
+    "react": {
+      "createClass": "createReactClass", 
+      "pragma": "React",  
+      "version": "15.0", 
+      "flowVersion": "0.53" 
+    },
+    "propWrapperFunctions": [ "forbidExtraProps" ] 
+  },
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended"
+  ],
+  "plugins": [
+    "react"
   ]
 }

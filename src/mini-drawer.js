@@ -12,12 +12,8 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import TextField from '@material-ui/core/TextField';
-import Select from '@material-ui/core/Select';
-import Input from '@material-ui/core/Input';
-import MenuItem from '@material-ui/core/MenuItem';
-import { mailFolderListItems, otherMailFolderListItems } from './tileData';
-import { FormControl } from '@material-ui/core';
+import { mailFolderListItems } from './tileData';
+import MainContent from './main-content';
 
 const drawerWidth = 240;
 
@@ -140,55 +136,7 @@ class MiniDrawer extends React.Component {
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <TextField
-            id="keyword"
-            label="Keyword"
-            type="search"
-            className={classes.textField}
-            margin="normal"
-          />
-          <TextField
-            id="title"
-            label="Title"
-            type="search"
-            className={classes.textField}
-            margin="normal"
-          />
-          <TextField
-            id="journal-title"
-            label="Journal Title"
-            type="search"
-            className={classes.textField}
-            margin="normal"
-          />
-          <TextField
-            id="author"
-            label="Author"
-            type="search"
-            className={classes.textField}
-            margin="normal"
-          />
-          <TextField
-            id="subject"
-            label="Subject"
-            type="search"
-            className={classes.textField}
-            margin="normal"
-          />
-          <TextField
-            id="isbn"
-            label="ISBN/ISSN"
-            type="search"
-            className={classes.textField}
-            margin="normal"
-          />
-          <TextField
-            id="call-number"
-            label="Call Number"
-            type="search"
-            className={classes.textField}
-            margin="normal"
-          />
+          <MainContent></MainContent>
         </main>
       </div>
     );
