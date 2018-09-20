@@ -8,6 +8,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import SettingsIcon from '@material-ui/icons/Settings';
 import SearchIcon from '@material-ui/icons/Search';
 import LinkIcon from '@material-ui/icons/Link';
+import InfoIcon from '@material-ui/icons/Info';
+import CodeIcon from '@material-ui/icons/Code';
 
 const LibXListItem = ({onClick, text, children}) => (
   <ListItem button onClick={() => onClick(text)}>
@@ -37,6 +39,12 @@ class ViewIcons extends React.Component {
         </LibXListItem>
         <LibXListItem text="Settings" onClick={this.props.onClick}>
           <SettingsIcon/>
+        </LibXListItem>
+        <LibXListItem text="About" onClick={this.props.onClick}>
+          <InfoIcon />
+        </LibXListItem>
+        <LibXListItem text="Developer" onClick={this.props.onClick}>
+          <CodeIcon />
         </LibXListItem>
       </div>
     );

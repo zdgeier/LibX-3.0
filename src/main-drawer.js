@@ -103,7 +103,6 @@ class MiniDrawer extends React.Component {
   
   handleContentSelected(selected) {
     this.setState({selectedContent: selected});
-    alert(selected);
   }
 
   render() {

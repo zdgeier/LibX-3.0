@@ -6,10 +6,11 @@ import SearchForm from "./search-form";
 class MainContent extends React.Component {
   constructor(props) {
     super(props);
+    this.generateContent = this.generateContent.bind(this);
   }
 
-  generateContent(selectedContent) {
-    switch(selectedContent) {
+  generateContent(contentName) {
+    switch(contentName) {
       case "Search":
         return (
           <SearchForm className="SearchForm"></SearchForm>
@@ -18,10 +19,10 @@ class MainContent extends React.Component {
   }
 
   render() {
-    const {selectedContent} = this.props;
     return (
       <div className="main-content">
-        {this.generateContent(selectedContent)}
+        {this.props.selectedContent}
+        {this.generateContent(this.props.selectedContent)}
       </div>
     );
   }

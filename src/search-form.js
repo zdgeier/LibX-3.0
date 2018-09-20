@@ -37,11 +37,17 @@ const onSubmit = (values, actions) => {
   // this could also easily use props or other
   // local state to alter the behavior if needed
   // this.props.sendValuesToServer(values)
+  var creating = browser.tabs.create({
+    url:"https://example.org"
+  });
+  creating.then(onCreated, onError);
 
+  /*
   setTimeout(() => {
     alert(JSON.stringify(values, null, 2));
     actions.setSubmitting(false);
   }, 1000);
+  */
 };
 
 class TextFields extends React.Component {
