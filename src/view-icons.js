@@ -5,51 +5,31 @@ import PropTypes from 'prop-types';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import DraftsIcon from '@material-ui/icons/L';
-import StarIcon from '@material-ui/icons/Star';
-import SendIcon from '@material-ui/icons/Send';
+import SettingsIcon from '@material-ui/icons/Settings';
 import SearchIcon from '@material-ui/icons/Search';
+import LinkIcon from '@material-ui/icons/Link';
 
-const LibXListItem = (props) => {
-  return (
-    <ListItem button>
-      <ListItemIcon>
-        {props.children}
-      </ListItemIcon>
-      <ListItemText primary={props.text} />
-    </ListItem>
-  );
+class ViewIcons extends React.Component {
+  LibXListItem = (children, text) => {
+    return (
+      <ListItem button onClick={this.props.listSelectHandler(text)}>
+        <ListItemIcon>
+          {children}
+        </ListItemIcon>
+        <ListItemText primary={text} />
+      </ListItem>
+    );
+  }
+
+  render () {
+    return (
+      <p>hello</p>
+    );
+  }
 }
 
-LibXListItem.propTypes = {
-  children: PropTypes.any,
-  text: PropTypes.text,
+ViewIcons.propTypes = {
+  listSelectHandler: PropTypes.func
 }
 
-export const ViewIcons = (
-  <div>
-    <LibXListItem text="Search"><SearchIcon/></LibXListItem>
-    <LibXListItem text="Links"></LibXListItem>
-    <LibXListItem text="Search1"><SearchIcon/></LibXListItem>
-    <LibXListItem text="Search1"><SearchIcon/></LibXListItem>
-    <LibXListItem text="Search1"><SearchIcon/></LibXListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <StarIcon />
-      </ListItemIcon>
-      <ListItemText primary="Starred" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <SendIcon />
-      </ListItemIcon>
-      <ListItemText primary="Send mail" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <DraftsIcon />
-      </ListItemIcon>
-      <ListItemText primary="Drafts" />
-    </ListItem>
-  </div>
-);
+export default ViewIcons;

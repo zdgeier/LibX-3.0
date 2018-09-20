@@ -12,7 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import { ViewIcons } from './view-icons';
+import ViewIcons from './view-icons';
 import MainContent from './main-content';
 
 const drawerWidth = 240;
@@ -83,8 +83,14 @@ const styles = theme => ({
 });
 
 class MiniDrawer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleContentSelected = this.handleContentSelected.bind(this);
+  }
+
   state = {
     open: false,
+    selectedContent: "Search"
   };
 
   handleDrawerOpen = () => {
@@ -93,6 +99,10 @@ class MiniDrawer extends React.Component {
 
   handleDrawerClose = () => {
     this.setState({ open: false });
+  };
+  
+  handleContentSelected = (selected) => {
+    this.setState({selectedContent: selected});
   };
 
   render() {
@@ -131,11 +141,11 @@ class MiniDrawer extends React.Component {
             </IconButton>
           </div>
           <Divider />
-          <List>{ViewIcons}</List>
+          <List><ViewIcons listSelectHandler={this.handleContentSelected}/></List>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <MainContent></MainContent>
+          <MainContent selectedContent={this.state.selectedContent} />
         </main>
       </div>
     );

@@ -6,30 +6,30 @@ import SearchForm from "./search-form";
 class MainContent extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {database: "Addison"};
   }
 
-  handleDrawerOpen () {
-    this.setState({ open: true });
-  }
-
-  handleDrawerClose () {
-    this.setState({ open: false });
+  generateContent(selectedContent) {
+    switch(selectedContent) {
+      case "Search":
+        return (
+          <SearchForm className="SearchForm"></SearchForm>
+        );
+    }
   }
 
   render() {
-    const { classes, theme } = this.props;
+    const {selectedContent} = this.props;
     return (
       <div className="main-content">
-        <SearchForm className="SearchForm"></SearchForm>
+        {this.generateContent(selectedContent)}
       </div>
     );
   }
 }
 
 MainContent.propTypes = {
-  classes: PropTypes.any,
-  theme: PropTypes.any,
-}
+  selectedContent: PropTypes.any
+};
+
 
 export default MainContent;

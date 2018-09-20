@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-  mode: 'development',
+  mode:"development",
   entry: {
     // Each entry in here would declare a file that needs to be transpiled
     // and included in the extension source.
@@ -42,7 +42,7 @@ module.exports = {
     // Since some NodeJS modules expect to be running in Node, it is helpful
     // to set this environment var to avoid reference errors.
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'),
+      'process.env.NODE_ENV': JSON.stringify('development'),
     }),
   ],
   // This will expose source map files so that errors will point to your
