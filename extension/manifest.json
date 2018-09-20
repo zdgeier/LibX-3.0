@@ -1,15 +1,15 @@
 {
   "manifest_version": 2,
-  "name": "react-es6-popup-example",
+  "name": "libx-3.0",
   "version": "1.0",
 
   "browser_action": {
     "browser_style": true,
     "default_icon": {
-      "48": "images/Watermelon-48.png",
-      "96": "images/Watermelon-96.png"
+      "48": "images/vtlogo-48.png",
+      "96": "images/vtlogo-96.png"
     },
-    "default_title": "React Eaxample",
+    "default_title": "LibX",
     "default_popup": "popup.html"
   },
 

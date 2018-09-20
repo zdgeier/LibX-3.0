@@ -20,14 +20,19 @@ const styles = theme => ({
   }
 });
 
+function myFunction(xml) {
+    console.log(xmlDoc.responseText);
+}
+
 const onSubmit = (values, actions) => {
-  // this could also easily use props or other
-  // local state to alter the behavior if needed
-  // this.props.sendValuesToServer(values)
-  var creating = browser.tabs.create({
-    url: "https://catalog.lib.vt.edu/cgi-bin/koha/opac-search.pl?q=" + values.keyword
-  });
-  creating.then(onCreated, onError);
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+        myFunction(this);
+        }
+    };
+    xhttp.open("GET", "http://libx.org/editions/13/F3/13F32FF9/config.xml", true);
+    xhttp.send();
 };
 
 class TextFields extends React.Component {
@@ -37,14 +42,7 @@ class TextFields extends React.Component {
         onSubmit={onSubmit}
         render={({ errors, dirty, isSubmitting }) => (
           <Form>
-            <Field name="keyword" label="Keyword" component={TextField} />
-            <Field name="title" label="Title" component={TextField} />
-            <Field name="journal-title" label="Journal Title" component={TextField} />
-            <Field name="author" label="Author" component={TextField} />
-            <Field name="subject" label="Subject" component={TextField} />
-            <Field name="isbn" label="ISBN/ISSN" component={TextField} />
-            <Field name="call-number" label="Call Number" component={TextField} />
-
+            <Field name="edition" label="Edition" component={TextField} />
             <Button
               type="submit"
               className="btn btn-default"

@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import TextField from "@material-ui/core/TextField";
 import SearchForm from "./search-form";
+import SettingsForm from "./settings-form";
 
 class MainContent extends React.Component {
   constructor(props) {
@@ -12,9 +13,9 @@ class MainContent extends React.Component {
   generateContent(contentName) {
     switch(contentName) {
       case "Search":
-        return (
-          <SearchForm className="SearchForm"></SearchForm>
-        );
+        return (<SearchForm />);
+      case "Settings":
+        return (<SettingsForm />);
     }
   }
 
