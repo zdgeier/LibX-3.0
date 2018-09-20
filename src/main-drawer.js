@@ -101,9 +101,10 @@ class MiniDrawer extends React.Component {
     this.setState({ open: false });
   };
   
-  handleContentSelected = (selected) => {
+  handleContentSelected(selected) {
     this.setState({selectedContent: selected});
-  };
+    alert(selected);
+  }
 
   render() {
     const { classes, theme } = this.props;
@@ -141,7 +142,7 @@ class MiniDrawer extends React.Component {
             </IconButton>
           </div>
           <Divider />
-          <List><ViewIcons listSelectHandler={this.handleContentSelected}/></List>
+          <List><ViewIcons onClick={this.handleContentSelected}/></List>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
