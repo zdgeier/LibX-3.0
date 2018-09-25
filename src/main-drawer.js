@@ -14,6 +14,10 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ViewIcons from './view-icons';
 import MainContent from './main-content';
+import SearchForm from "./search-form";
+import SettingsForm from "./settings-form";
+import SettingsIcon from '@material-ui/icons/Settings';
+import SearchIcon from '@material-ui/icons/Search';
 
 const drawerWidth = 240;
 
@@ -82,6 +86,34 @@ const styles = theme => ({
   },
 });
 
+    const drawerDescription = [
+      {
+        label: "Search",
+        icon: SearchIcon,
+        content: SearchForm
+      },
+      {
+        label: "Settings",
+        icon: SettingsIcon,
+        content: SettingsForm
+      }
+
+      /*
+        <LibXListItem text="Links" onClick={this.props.onClick}>
+          <LinkIcon/>
+        </LibXListItem>
+        <LibXListItem text="Settings" onClick={this.props.onClick}>
+          <SettingsIcon/>
+        </LibXListItem>
+        <LibXListItem text="About" onClick={this.props.onClick}>
+          <InfoIcon />
+        </LibXListItem>
+        <LibXListItem text="Developer" onClick={this.props.onClick}>
+          <CodeIcon />
+        </LibXListItem>
+        */
+    ];
+
 class MiniDrawer extends React.Component {
   constructor(props) {
     super(props);
@@ -90,7 +122,7 @@ class MiniDrawer extends React.Component {
 
   state = {
     open: false,
-    selectedContent: "Search"
+    selectedContent: drawerDescription[0]
   };
 
   handleDrawerOpen = () => {
@@ -141,11 +173,11 @@ class MiniDrawer extends React.Component {
             </IconButton>
           </div>
           <Divider />
-          <List><ViewIcons onClick={this.handleContentSelected}/></List>
+          <List><ViewIcons drawerDescription={drawerDescription} onClick={this.handleContentSelected}/></List>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <MainContent selectedContent={this.state.selectedContent} />
+          <MainContent drawerDescription={drawerDescription} selectedContent={this.state.selectedContent} />
         </main>
       </div>
     );

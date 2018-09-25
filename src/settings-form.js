@@ -21,7 +21,7 @@ const styles = theme => ({
 });
 
 function myFunction(xml) {
-    console.log(xmlDoc.responseText);
+  console.log(xml.responseText);
 }
 
 const onSubmit = (values, actions) => {

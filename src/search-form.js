@@ -3,7 +3,6 @@ import { withStyles } from "@material-ui/core/styles";
 import TextField from "./search-text-field";
 import { Formik, Form, FastField as Field } from "formik";
 import Button from "@material-ui/core/Button";
-import * as Yup from "yup";
 
 const styles = theme => ({
   container: {
@@ -21,13 +20,12 @@ const styles = theme => ({
 });
 
 const onSubmit = (values, actions) => {
-  // this could also easily use props or other
-  // local state to alter the behavior if needed
-  // this.props.sendValuesToServer(values)
   var creating = browser.tabs.create({
-    url: "https://catalog.lib.vt.edu/cgi-bin/koha/opac-search.pl?q=" + values.keyword
+    url: `https://catalog.lib.vt.edu/cgi-bin/koha/opac-search.pl?q=${values.keyword}`
   });
-  creating.then(onCreated, onError);
+  fetch("http://libx.org/editions/vt/config.xml").then((data) => {
+    console.dir(data);
+  })
 };
 
 class TextFields extends React.Component {

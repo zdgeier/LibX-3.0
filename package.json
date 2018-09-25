@@ -2,7 +2,6 @@
   "name": "libx-3.0",
   "version": "0.1.0",
   "private": true,
-  "main": "App.js",
   "scripts": {
     "build": "webpack -w --display-error-details --progress --colors",
     "start": "web-ext run -f=\"C:\\Program Files\\Firefox Developer Edition\\firefox.exe\" -s extension/"

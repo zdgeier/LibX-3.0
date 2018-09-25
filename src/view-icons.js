@@ -5,24 +5,19 @@ import PropTypes from 'prop-types';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import SettingsIcon from '@material-ui/icons/Settings';
-import SearchIcon from '@material-ui/icons/Search';
-import LinkIcon from '@material-ui/icons/Link';
-import InfoIcon from '@material-ui/icons/Info';
-import CodeIcon from '@material-ui/icons/Code';
 
-const LibXListItem = ({onClick, text, children}) => (
-  <ListItem button onClick={() => onClick(text)}>
+const LibXListItem = ({onClick, description, children}) => (
+  <ListItem button onClick={() => onClick(description)}>
     <ListItemIcon>
       {children}
     </ListItemIcon>
-    <ListItemText primary={text} />
+    <ListItemText primary={description.label} />
   </ListItem>
 );
 
 LibXListItem.propTypes = {
   onClick: PropTypes.func,
-  text: PropTypes.string,
+  description: PropTypes.object,
   children: PropTypes.any
 }
 
@@ -31,27 +26,20 @@ class ViewIcons extends React.Component {
   render () {
     return (
       <div>
-        <LibXListItem text="Search" onClick={this.props.onClick}>
-          <SearchIcon/>
-        </LibXListItem>
-        <LibXListItem text="Links" onClick={this.props.onClick}>
-          <LinkIcon/>
-        </LibXListItem>
-        <LibXListItem text="Settings" onClick={this.props.onClick}>
-          <SettingsIcon/>
-        </LibXListItem>
-        <LibXListItem text="About" onClick={this.props.onClick}>
-          <InfoIcon />
-        </LibXListItem>
-        <LibXListItem text="Developer" onClick={this.props.onClick}>
-          <CodeIcon />
-        </LibXListItem>
+        {this.props.drawerDescription.map((desc, index) => {
+          return (
+            <LibXListItem key={index} description={desc} onClick={this.props.onClick}>
+              <desc.icon/>
+            </LibXListItem>
+          );
+        })}
       </div>
     );
   }
 }
 
 ViewIcons.propTypes = {
+  drawerDescription: PropTypes.array,
   listSelectHandler: PropTypes.func,
   onClick: PropTypes.func
 }
