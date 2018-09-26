@@ -12,12 +12,9 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ViewIcons from './view-icons';
-import MainContent from './main-content';
-import SearchForm from "./search-form";
-import SettingsForm from "./settings-form";
-import SettingsIcon from '@material-ui/icons/Settings';
-import SearchIcon from '@material-ui/icons/Search';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 
 const drawerWidth = 240;
 
@@ -86,33 +83,20 @@ const styles = theme => ({
   },
 });
 
-    const drawerDescription = [
-      {
-        label: "Search",
-        icon: SearchIcon,
-        content: SearchForm
-      },
-      {
-        label: "Settings",
-        icon: SettingsIcon,
-        content: SettingsForm
-      }
+const DrawerListItem = ({onClick, description, children}) => (
+  <ListItem button onClick={() => onClick(description)}>
+    <ListItemIcon>
+      {children}
+    </ListItemIcon>
+    <ListItemText primary={description.label} />
+  </ListItem>
+);
 
-      /*
-        <LibXListItem text="Links" onClick={this.props.onClick}>
-          <LinkIcon/>
-        </LibXListItem>
-        <LibXListItem text="Settings" onClick={this.props.onClick}>
-          <SettingsIcon/>
-        </LibXListItem>
-        <LibXListItem text="About" onClick={this.props.onClick}>
-          <InfoIcon />
-        </LibXListItem>
-        <LibXListItem text="Developer" onClick={this.props.onClick}>
-          <CodeIcon />
-        </LibXListItem>
-        */
-    ];
+DrawerListItem.propTypes = {
+  onClick: PropTypes.func,
+  description: PropTypes.object,
+  children: PropTypes.any
+}
 
 class MiniDrawer extends React.Component {
   constructor(props) {
@@ -122,7 +106,7 @@ class MiniDrawer extends React.Component {
 
   state = {
     open: false,
-    selectedContent: drawerDescription[0]
+    selectedContent: this.props.drawerDescription[0]
   };
 
   handleDrawerOpen = () => {
@@ -139,6 +123,7 @@ class MiniDrawer extends React.Component {
 
   render() {
     const { classes, theme } = this.props;
+    const DrawerContent = this.state.selectedContent.content;
 
     return (
       <div className={classes.root}>
@@ -156,7 +141,7 @@ class MiniDrawer extends React.Component {
               <MenuIcon />
             </IconButton>
             <Typography variant="headline" color="inherit" noWrap paragraph={false}>
-                LibX
+                {this.props.title}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -173,11 +158,22 @@ class MiniDrawer extends React.Component {
             </IconButton>
           </div>
           <Divider />
-          <List><ViewIcons drawerDescription={drawerDescription} onClick={this.handleContentSelected}/></List>
+          <List>
+              {this.props.drawerDescription.map((desc, index) => {
+                return (
+                  <DrawerListItem key={index} description={desc} onClick={this.handleContentSelected}>
+                    <desc.icon/>
+                  </DrawerListItem>
+                );
+              })}
+          </List>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <MainContent drawerDescription={drawerDescription} selectedContent={this.state.selectedContent} />
+          <div className="main-content">
+            {this.state.selectedContent.label}
+            <DrawerContent/>
+          </div>
         </main>
       </div>
     );
@@ -187,6 +183,8 @@ class MiniDrawer extends React.Component {
 MiniDrawer.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
+  drawerDescription: PropTypes.array,
+  title: PropTypes.string
 };
 
 export default withStyles(styles, { withTheme: true })(MiniDrawer);
