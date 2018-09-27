@@ -23,26 +23,38 @@ const onSubmit = (values, actions) => {
   var creating = browser.tabs.create({
     url: `https://catalog.lib.vt.edu/cgi-bin/koha/opac-search.pl?q=${values.keyword}`
   });
-  fetch("http://libx.org/editions/vt/config.xml").then((data) => {
-    console.dir(data);
+  fetch("http://localhost/config.xml").then((data) => {
+    data.text().then((text) => {
+      console.dir(text);
+    });
   })
 };
+
+const initialValues = {
+  keyword: "",
+  title: "",
+  journalTitle: "",
+  author: "",
+  subject: "",
+  isbn: "",
+  callNumber: "",
+}
 
 class TextFields extends React.Component {
   render() {
     return (
       <Formik
         onSubmit={onSubmit}
+        initialValues= {initialValues}
         render={({ errors, dirty, isSubmitting }) => (
           <Form>
             <Field name="keyword" label="Keyword" component={TextField} />
             <Field name="title" label="Title" component={TextField} />
-            <Field name="journal-title" label="Journal Title" component={TextField} />
+            <Field name="journalTitle" label="Journal Title" component={TextField} />
             <Field name="author" label="Author" component={TextField} />
             <Field name="subject" label="Subject" component={TextField} />
             <Field name="isbn" label="ISBN/ISSN" component={TextField} />
-            <Field name="call-number" label="Call Number" component={TextField} />
-
+            <Field name="callNumber" label="Call Number" component={TextField} />
             <Button
               type="submit"
               className="btn btn-default"

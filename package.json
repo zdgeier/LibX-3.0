@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "webpack -w --display-error-details --progress --colors",
+    "build": "webpack -d -w --display-error-details --progress --colors",
     "start": "web-ext run -f=\"C:\\Program Files\\Firefox Developer Edition\\firefox.exe\" -s extension/"
   },
   "dependencies": {
@@ -19,6 +19,7 @@
     "react-dom": "16.5.2",
     "react-scripts": "1.1.5",
     "web-ext": "2.9.1",
+    "xml2js": "0.4.19",
     "yup": "0.26.5"
   },
   "devDependencies": {

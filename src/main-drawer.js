@@ -172,7 +172,7 @@ class MiniDrawer extends React.Component {
           <div className={classes.toolbar} />
           <div className="main-content">
             {this.state.selectedContent.label}
-            <DrawerContent/>
+            <DrawerContent {...this.state.selectedContent.descProps}/>
           </div>
         </main>
       </div>
@@ -184,7 +184,8 @@ MiniDrawer.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
   drawerDescription: PropTypes.array,
-  title: PropTypes.string
+  title: PropTypes.string,
+  descProps: PropTypes.object
 };
 
 export default withStyles(styles, { withTheme: true })(MiniDrawer);

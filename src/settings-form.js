@@ -1,9 +1,10 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "./search-text-field";
 import { Formik, Form, FastField as Field } from "formik";
 import Button from "@material-ui/core/Button";
-import * as Yup from "yup";
+import xml2js from 'xml2js';
 
 const styles = theme => ({
   container: {
@@ -24,22 +25,26 @@ function myFunction(xml) {
   console.log(xml.responseText);
 }
 
-const onSubmit = (values, actions) => {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-        myFunction(this);
-        }
-    };
-    xhttp.open("GET", "http://libx.org/editions/13/F3/13F32FF9/config.xml", true);
-    xhttp.send();
-};
+const initialValues = {
+  edition: "",
+}
 
 class TextFields extends React.Component {
+  onSubmit = (values, actions) => {
+    fetch(values.edition).then((data) => {
+      var parser = new xml2js.Parser();
+      data.text().then((text) => {parser.parseString(text, (err, result) => {
+        console.dir(result);
+        console.log('Done');
+      }) });
+    })
+  };
+
   render() {
     return (
       <Formik
-        onSubmit={onSubmit}
+        onSubmit={this.onSubmit}
+        initialValues={initialValues}
         render={({ errors, dirty, isSubmitting }) => (
           <Form>
             <Field name="edition" label="Edition" component={TextField} />
@@ -52,6 +57,10 @@ class TextFields extends React.Component {
       />
     );
   }
+}
+
+TextFields.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
 }
 
 export default withStyles(styles)(TextFields);
