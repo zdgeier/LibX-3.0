@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import MainDrawer from './main-drawer';
-import SettingsForm from "./settings-form";
 import LinksForm from "./links-form";
 import SettingsIcon from '@material-ui/icons/Settings';
 import SearchIcon from '@material-ui/icons/Search';
@@ -19,6 +18,16 @@ const searchFields = [
   { name: "callNumber", label: "Call Number" }
 ]
 
+const searchInit = {
+  keyword: "",
+  title: "",
+  journalTitle: "",
+  author: "",
+  subject: "",
+  isbn: "",
+  callNumber: ""
+}
+
 const submitSearch = (values, actions) => {
   var creating = browser.tabs.create({
     url: `https://catalog.lib.vt.edu/cgi-bin/koha/opac-search.pl?q=${values.keyword}`
@@ -28,6 +37,10 @@ const submitSearch = (values, actions) => {
 const settingsFields = [
   { name: "edition", label: "Edition" }
 ]
+
+const settingsInit = {
+  edition: ""
+}
 
 const submitSettings = (values, actions) => {
   fetch(values.edition).then((data) => {
@@ -51,7 +64,8 @@ class LibX extends React.Component {
           content: SimpleForm,
           descProps: {
             onSubmit: submitSearch, 
-            fields: searchFields
+            fields: searchFields,
+            initValues: searchInit
           },
         },
         {
@@ -66,7 +80,8 @@ class LibX extends React.Component {
           content: SimpleForm,
           descProps: {
             onSubmit: submitSettings, 
-            fields: settingsFields
+            fields: settingsFields,
+            initValues: settingsInit
           },
         }
       ]
@@ -76,7 +91,7 @@ class LibX extends React.Component {
   updateLinks = (links) => {
     console.dir(links);
   }
-
+ 
   render() {
    return (
        <MainDrawer drawerDescription={this.state.libxDescription} title={"LibX"}/>
