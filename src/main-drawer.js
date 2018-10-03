@@ -83,22 +83,34 @@ const styles = theme => ({
   },
 });
 
-const DrawerListItem = ({onClick, description, children}) => (
-  <ListItem button onClick={() => onClick(description)}>
-    <ListItemIcon>
-      {children}
-    </ListItemIcon>
-    <ListItemText primary={description.label} />
+const DrawerListItem = ({onClick, title, content, icon}) => (
+  <ListItem button onClick={() => onClick(content)}>
+    <ListItemIcon>{icon}</ListItemIcon>
+    <ListItemText primary={title} />
   </ListItem>
 );
 
 DrawerListItem.propTypes = {
   onClick: PropTypes.func,
-  description: PropTypes.object,
-  children: PropTypes.any
+  title: PropTypes.string,
+  content: PropTypes.object,
+  icon: PropTypes.object,
 }
 
-class MiniDrawer extends React.Component {
+const ListItems = ({items, onClick}) => (
+  items.map((desc, index) => {
+    return (
+      <DrawerListItem 
+        key={index} 
+        title={desc.props.title} 
+        icon={desc.props.icon} 
+        content={desc}
+        onClick={onClick}/>
+    );
+  })
+);
+
+class MainDrawer extends React.Component {
   constructor(props) {
     super(props);
     this.handleContentSelected = this.handleContentSelected.bind(this);
@@ -106,7 +118,7 @@ class MiniDrawer extends React.Component {
 
   state = {
     open: false,
-    selectedContent: this.props.drawerDescription[0]
+    selectedContent: React.Children.toArray(this.props.children)[0]
   };
 
   handleDrawerOpen = () => {
@@ -123,7 +135,8 @@ class MiniDrawer extends React.Component {
 
   render() {
     const { classes, theme } = this.props;
-    const DrawerContent = this.state.selectedContent.content;
+    //const DrawerContent = this.state.selectedContent.content;
+    let children = React.Children.toArray(this.props.children);
     return (
       <div className={classes.root}>
         <AppBar
@@ -158,20 +171,13 @@ class MiniDrawer extends React.Component {
           </div>
           <Divider />
           <List>
-              {this.props.drawerDescription.map((desc, index) => {
-                return (
-                  <DrawerListItem key={index} description={desc} onClick={this.handleContentSelected}>
-                    <desc.icon/>
-                  </DrawerListItem>
-                );
-              })}
+            <ListItems items={this.props.children} onClick={this.handleContentSelected} />
           </List>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <div className="main-content">
-            {this.state.selectedContent.label}
-            <DrawerContent {...this.state.selectedContent.descProps}/>
+            {this.state.selectedContent}
           </div>
         </main>
       </div>
@@ -179,12 +185,13 @@ class MiniDrawer extends React.Component {
   }
 }
 
-MiniDrawer.propTypes = {
+MainDrawer.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
-  drawerDescription: PropTypes.array,
+  //drawerDescription: PropTypes.array,
   title: PropTypes.string,
-  descProps: PropTypes.object
+  //descProps: PropTypes.object
+  children: PropTypes.array,
 };
 
-export default withStyles(styles, { withTheme: true })(MiniDrawer);
+export default withStyles(styles, { withTheme: true })(MainDrawer);

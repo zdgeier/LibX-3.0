@@ -15,55 +15,58 @@ const submitSearch = (values) => {
   });
 };
 
-const submitSettings = (values) => {
-  fetch(values.edition).then((data) => {
-    var parser = new xml2js.Parser();
-    data.text().then((text) => {parser.parseString(text, (err, result) => {
-      console.dir(result);
-      console.log('Done');
-    }) });
-  })
-};
-
-const libxDescription = [
-  {
-    label: "Search",
-    icon: SearchIcon,
-    content: SearchForm,
-    descProps: {
-      onSubmit: submitSearch, 
-    },
-  },
-  {
-    label: "Links",
-    icon: LinksIcon,
-    content: LinksForm,
-    descProps: {
-      links: "test"
-    },
-  },
-  {
-    label: "Settings",
-    icon: SettingsIcon,
-    content: SettingsForm,
-    descProps: {
-      onSubmit: submitSettings, 
-    },
-  }
-]
-
 class LibX extends React.Component {
   constructor(props) {
     super(props);
+
+    const editionHit = localStorage.getItem("links");
+    if (editionHit) {
+      console.log("hit");
+      console.dir(editionHit);
+      this.state = {links: JSON.parse(editionHit)};
+      return;
+    }
+
+    this.state = {
+      links: [
+        {
+          href: "test",
+          label: "hi"
+        }
+      ]
+    }
   }
 
-  updateLinks = (links) => {
-    console.dir(links);
+  storeItem = ({item, key}) => {
+    localStorage.setItem(key, JSON.stringify(item));
+    this.setState({links: item});
   }
+
+  submitSettings = (values) => {
+    const editionHit = localStorage.getItem(values.edition);
+    if (editionHit) {
+      this.setState({links: editionHit});
+      return;
+    }
+
+    fetch(values.edition).then((data) => {
+      var parser = new xml2js.Parser({mergeAttrs: true, explicitArray: false});
+      data.text().then((text) => {
+        parser.parseString(text, (err, result) => {
+        console.dir(result);
+        this.storeItem({item: result.edition.links.url, key: "links"});
+        //this.setState({links: result.edition.links.url});
+      }) });
+    })
+  };
  
   render() {
-   return (
-       <MainDrawer drawerDescription={libxDescription} title={"LibX"}/>
+    return (
+      <MainDrawer title={"LibX"}>
+        <SearchForm title="Search" icon={<SearchIcon/>} onSubmit={submitSearch} />
+        <LinksForm title="Links" icon={<LinksIcon/>} links={this.state.links} />
+        <SettingsForm title="Settings" icon={<SettingsIcon/>} onSubmit={this.submitSettings} />
+      </MainDrawer>
    )
   }
 }
