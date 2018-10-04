@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { withStyles } from "@material-ui/core/styles";
 import { Formik, Form, FastField as Field } from "formik";
 import Button from "@material-ui/core/Button";
-import MaterialInput from "../input/material-input";
-import { fetchEdition } from "../../actions/index"
+import MaterialInput from "../input/MaterialInput";
+import { fetchEdition } from "../../actions"
 
 const styles = theme => ({
   container: {

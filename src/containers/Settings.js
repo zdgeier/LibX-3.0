@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { setLinks, setEdition, fetchEdition, fetchEditionIfNeeded } from '../actions'
-import SettingsForm from '../components/forms/settings-form'
+import SettingsForm from '../components/forms/SettingsForm'
 
 const mapStateToProps = state => ({ 
   links: state.links

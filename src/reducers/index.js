@@ -10,7 +10,7 @@ const links = (state = [], action) => {
   }
 }
 
-const edition = (state = "", action) => {
+const edition = (state = "LibX", action) => {
   switch (action.type) {
     case SET_EDITION:
       return action.edition

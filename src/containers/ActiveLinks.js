@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import LinksForm from '../components/forms/links-form'
+import LinksForm from '../components/forms/LinksForm'
 
 const mapStateToProps = state => ({
   links: state.links

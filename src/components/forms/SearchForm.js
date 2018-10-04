@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from "@material-ui/core/styles";
 import { Formik, Form, FastField as Field } from "formik";
 import Button from "@material-ui/core/Button";
-import MaterialInput from "../input/material-input";
+import MaterialInput from "../input/MaterialInput";
 
 const styles = theme => ({
   container: {
@@ -19,6 +19,12 @@ const styles = theme => ({
     width: 200
   }
 });
+
+const submitSearch = (values) => {
+  browser.tabs.create({
+    url: `https://catalog.lib.vt.edu/cgi-bin/koha/opac-search.pl?q=${values.keyword}`
+  });
+};
 
 const initialSearchValues = {
   keyword: "",
