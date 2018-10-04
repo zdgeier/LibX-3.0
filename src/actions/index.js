@@ -29,11 +29,20 @@ export const fetchEdition = edition => dispatch => {
     ));
 }
 
-/*storeItem = ({item, key}) => {
-    localStorage.setItem(key, JSON.stringify(item));
-    this.setState({links: item});
+/*
+export const fetchEditionIfNeeded = edition => dispatch => {
+  var result = localStorage.getItem(edition);
+  if (result === null) {
+    localStorage.setItem(edition, JSON.stringify(result));
   }
+  else {
+    dispatch(setLinks(result.edition.links.url));
+    dispatch(setEdition(result.edition.name.short));
+  }
+  
+}*/
 
+/*
   submitSettings = (values) => {
     const editionHit = localStorage.getItem(values.edition);
     if (editionHit) {
