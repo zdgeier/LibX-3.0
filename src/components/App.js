@@ -1,13 +1,15 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import MainDrawer from './main-drawer';
-import LinksForm from './links-form';
+import LinksForm from './forms/links-form';
 import SettingsIcon from '@material-ui/icons/Settings';
 import SearchIcon from '@material-ui/icons/Search';
 import LinksIcon from '@material-ui/icons/Link';
-import SearchForm from './search-form';
-import SettingsForm from './settings-form';
+import SearchForm from './forms/search-form';
+import SettingsForm from './forms/settings-form';
 import xml2js from 'xml2js';
+import ActiveLinks from '../containers/ActiveLinks';
 
 const submitSearch = (values) => {
   browser.tabs.create({
@@ -15,28 +17,12 @@ const submitSearch = (values) => {
   });
 };
 
-class LibX extends React.Component {
-  constructor(props) {
-    super(props);
-
-    const editionHit = localStorage.getItem("links");
-    if (editionHit) {
-      console.log("hit");
-      console.dir(editionHit);
-      this.state = {links: JSON.parse(editionHit)};
-      return;
-    }
-
-    this.state = {
-      links: [
-        {
-          href: "test",
-          label: "hi"
-        }
-      ]
-    }
+class App extends React.Component {
+  static propTypes = {
+    links: PropTypes.arrayOf(PropTypes.object)
   }
 
+  /*
   storeItem = ({item, key}) => {
     localStorage.setItem(key, JSON.stringify(item));
     this.setState({links: item});
@@ -69,6 +55,19 @@ class LibX extends React.Component {
       </MainDrawer>
    )
   }
+  */
+
+  render() {
+    return (
+      <div className='App'>
+        <MainDrawer>
+          <SearchForm/>
+          <ActiveLinks links={this.props.links} />
+          <SettingsForm/>
+        </MainDrawer>
+      </div>
+   )
+  }
 }
 
-ReactDOM.render(<LibX/>, document.getElementById('app'));
+export default App

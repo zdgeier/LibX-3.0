@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { withStyles } from "@material-ui/core/styles";
 import { Formik, Form, FastField as Field } from "formik";
 import Button from "@material-ui/core/Button";
-import MaterialInput from "./material-input";
+import { setLinks } from "../../actions";
+import MaterialInput from "../input/material-input";
 
 const styles = theme => ({
   container: {
@@ -20,6 +21,12 @@ const styles = theme => ({
   }
 });
 
+const handleSubmit = (values, { props }) => {
+  console.log("Settings submit");
+  console.dir(values);
+  props.dispatch(setLinks({href: "test", label: "help"}));
+}
+
 const initialSettingsValues = {
   edition: ""
 }
@@ -28,7 +35,7 @@ class SettingsForm extends React.Component {
   render() {
     return (
       <Formik
-        onSubmit={this.props.onSubmit}
+        onSubmit={handleSubmit}
         initialValues={initialSettingsValues}
         render={({ errors, dirty, isSubmitting }) => (
           <Form>
