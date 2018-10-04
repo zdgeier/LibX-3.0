@@ -135,8 +135,6 @@ class MainDrawer extends React.Component {
 
   render() {
     const { classes, theme } = this.props;
-    //const DrawerContent = this.state.selectedContent.content;
-    let children = React.Children.toArray(this.props.children);
     return (
       <div className={classes.root}>
         <AppBar
@@ -188,9 +186,7 @@ class MainDrawer extends React.Component {
 MainDrawer.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
-  //drawerDescription: PropTypes.array,
   title: PropTypes.string,
-  //descProps: PropTypes.object
   children: PropTypes.array,
 };
 

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { withStyles } from "@material-ui/core/styles";
 import { Formik, Form, FastField as Field } from "formik";
 import Button from "@material-ui/core/Button";
-import { setLinks } from "../../actions";
 import MaterialInput from "../input/material-input";
+import { fetchEdition } from "../../actions/index"
 
 const styles = theme => ({
   container: {
@@ -21,16 +21,32 @@ const styles = theme => ({
   }
 });
 
-const handleSubmit = (values, { props }) => {
+const handleSubmit = values => {
   console.log("Settings submit");
   console.dir(values);
-  props.dispatch(setLinks({href: "test", label: "help"}));
+  fetchEdition(values.edition);
 }
+
+const SettingsForm = ({ onSubmit }) => (
+  <Formik
+    onSubmit={onSubmit}
+    initialValues={initialSettingsValues}
+    render={({ errors, dirty, isSubmitting }) => (
+      <Form>
+        <Field name="edition" label="Edition" component={MaterialInput} />
+        <Button
+          type="submit"
+          className="btn btn-default">Submit</Button>
+      </Form>
+    )}
+  />
+)
 
 const initialSettingsValues = {
   edition: ""
 }
 
+/*
 class SettingsForm extends React.Component {
   render() {
     return (
@@ -53,7 +69,13 @@ class SettingsForm extends React.Component {
 SettingsForm.propTypes = {
   onSubmit: PropTypes.func,
   initValues: PropTypes.object,
-  fields: PropTypes.array
+  fields: PropTypes.array,
+  onClick: PropTypes.func
+}
+*/
+SettingsForm.propTypes = {
+  //changeEdition: PropTypes.func
+  onSubmit: PropTypes.func
 }
 
 export default withStyles(styles)(SettingsForm);

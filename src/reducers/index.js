@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { SET_LINKS } from '../actions'
+import { SET_LINKS, SET_EDITION } from '../actions'
 
 const links = (state = [], action) => {
   switch (action.type) {
@@ -10,8 +10,18 @@ const links = (state = [], action) => {
   }
 }
 
+const edition = (state = "", action) => {
+  switch (action.type) {
+    case SET_EDITION:
+      return action.edition
+    default:
+      return state
+  }
+}
+
 const rootReducer = combineReducers({
-    links
+  edition,
+  links
 })
 
 export default rootReducer

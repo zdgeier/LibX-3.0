@@ -8,13 +8,15 @@ const createTab = (href) => {
   });
 }
 
-const LinksForm = ({links}) => {
-  {links.map((values, index) => {
-    return (
-      <Button key={index} onClick={() => createTab(values.href)}>{values.label}</Button>
-    );
-  })}
-}
+const LinksForm = ({links}) => (
+  <div className="LinksForm">
+    {links.map((values, index) => {
+      return (
+        <Button key={index} onClick={() => createTab(values.href)}>{values.label}</Button>
+      );
+    })}
+  </div>
+)
 
 LinksForm.propTypes = {
   links: PropTypes.arrayOf(PropTypes.shape(
