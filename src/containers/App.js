@@ -11,13 +11,13 @@ import Settings from './Settings';
 
 class App extends React.Component {
   static propTypes = {
-    edition: PropTypes.string.isRequired
+    edition: PropTypes.object.isRequired
   }
 
   render() {
     return (
       <div className='App'>
-        <MainDrawer title={this.props.edition}>
+        <MainDrawer title='LibX'>
           <SearchForm title='Search' icon={<SearchIcon/>}/>
           <ActiveLinks title='Links' icon={<LinksIcon/>}/>
           <Settings title='Settings' icon={<SettingsIcon/>}/>

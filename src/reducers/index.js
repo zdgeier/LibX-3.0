@@ -1,27 +1,9 @@
-import { combineReducers } from 'redux'
-import { SET_LINKS, SET_EDITION } from '../actions'
-
-const links = (state = [], action) => {
-  switch (action.type) {
-    case SET_LINKS:
-      return action.links
-    default:
-      return state
-  }
-}
-
-const edition = (state = "LibX", action) => {
-  switch (action.type) {
-    case SET_EDITION:
-      return action.edition
-    default:
-      return state
-  }
-}
+import { combineReducers } from 'redux';
+import asyncHandler from './asyncHandler.js';
+import { FETCH_EDITION } from '../actions';
 
 const rootReducer = combineReducers({
-  edition,
-  links
+  edition: asyncHandler(FETCH_EDITION),
 })
 
 export default rootReducer
