@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { fetchEdition } from '../actions'
+import { handleFetchEdition } from '../actions'
 import SettingsForm from '../components/forms/SettingsForm'
 
 const mapStateToProps = state => ({ 
@@ -7,7 +7,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  onSubmit: (values) => dispatch(fetchEdition(values.edition))
+  onSubmit: (values) => dispatch(handleFetchEdition(values.edition))
 })
 
 export default connect(

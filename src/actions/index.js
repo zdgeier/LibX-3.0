@@ -1,24 +1,46 @@
 import xml2js from 'xml2js';
-import { request } from 'https';
 
 export const FETCH_EDITION = 'FETCH_EDITION'
 
-export function fetchEdition(edition) {
+export const handleFetchEdition = (edition) => {
   return apiAction({
     baseType: FETCH_EDITION,
     fetch() {
-      var parser = new xml2js.Parser({mergeAttrs: true, explicitArray: false});
-      return fetch(edition)
-        .then(response => response.text())
-        .then(text => {
-          var json = {};
-          parser.parseString(text, 
-            (err, result) => {
-              json = { data: {edition: result.edition} };
-          });
-          return json;
+      const gotEdition = (editionData) => {
+        if (Object.keys(editionData).length == 0) {
+          console.log("fetching edition");
+          return fetchEdition(edition);
+        }
+        else {
+          console.log("using existing edition");
+          console.dir(editionData);
+          return editionData.edition;
+        }
+      }
+      
+      return browser.storage.local.get(edition).then(gotEdition, 
+        (error) => {
+          console.log(error);
         });
-    },
+    }, 
+  });
+}
+
+const fetchEdition = (editionURL) => {
+  var parser = new xml2js.Parser({mergeAttrs: true, explicitArray: false});
+  return fetch(editionURL)
+  .then(response => response.text())
+  .then(text => {
+    var edition = {};
+    parser.parseString(text, 
+      (err, result) => {
+        edition = {data: result.edition};
+    });
+    browser.storage.local.set({edition}).then(
+      () => console.log("edition fetched and stored locally"), 
+      (error) => console.log(error)
+    );
+    return edition;
   });
 }
 
@@ -34,10 +56,11 @@ export default function apiAction (
       type: baseType + ':BEGIN',
       params,
     });
-
     fetch().then(
       response => {
-        console.dir(response);
+        console.log("response");
+        console.log(response);
+        console.log(response.data);
         if (onSuccess) {
           onSuccess(dispatch, response.data, getState);
         }
@@ -60,36 +83,3 @@ export default function apiAction (
     );
   };
 }
-
-/*
-export const fetchEditionIfNeeded = edition => dispatch => {
-  var result = localStorage.getItem(edition);
-  if (result === null) {
-    localStorage.setItem(edition, JSON.stringify(result));
-  }
-  else {
-    dispatch(setLinks(result.edition.links.url));
-    dispatch(setEdition(result.edition.name.short));
-  }
-}
-*/
-
-/*
-  submitSettings = (values) => {
-    const editionHit = localStorage.getItem(values.edition);
-    if (editionHit) {
-      this.setState({links: editionHit});
-      return;
-    }
-
-    fetch(values.edition).then((data) => {
-      var parser = new xml2js.Parser({mergeAttrs: true, explicitArray: false});
-      data.text().then((text) => {
-        parser.parseString(text, (err, result) => {
-        console.dir(result);
-        this.storeItem({item: result.edition.links.url, key: "links"});
-        //this.setState({links: result.edition.links.url});
-      }) });
-    })
-  };
-*/
