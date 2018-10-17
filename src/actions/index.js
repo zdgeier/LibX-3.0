@@ -1,4 +1,5 @@
 import xml2js from 'xml2js';
+import findNodesXML from '../util/editioncatalogreader'
 
 export const FETCH_EDITION = 'FETCH_EDITION'
 
@@ -7,6 +8,8 @@ export const handleFetchEdition = (edition) => {
     baseType: FETCH_EDITION,
     fetch() {
       const gotEdition = (editionData) => {
+        console.dir(editionData);
+        //browser.storage.local.get().then((items) => console.dir(items))
         if (Object.keys(editionData).length == 0) {
           console.log("fetching edition");
           return fetchEdition(edition);
@@ -27,21 +30,32 @@ export const handleFetchEdition = (edition) => {
 }
 
 const fetchEdition = (editionURL) => {
-  var parser = new xml2js.Parser({mergeAttrs: true, explicitArray: false});
   return fetch(editionURL)
-  .then(response => response.text())
-  .then(text => {
-    var edition = {};
-    parser.parseString(text, 
-      (err, result) => {
-        edition = {data: result.edition};
+    .then(response => response.text())
+    .then(text => {
+      var edition = parseEdition(text);
+      browser.storage.local.set({edition}).then(
+        () => console.log("edition fetched and stored locally"), 
+        (error) => console.log(error)
+      );
+      return edition;
     });
-    browser.storage.local.set({edition}).then(
-      () => console.log("edition fetched and stored locally"), 
-      (error) => console.log(error)
-    );
-    return edition;
+}
+
+const parseEdition = (xmlText) => {
+  var edition = {};
+  var parser = new xml2js.Parser({mergeAttrs: true, explicitArray: false});
+  parser.parseString(xmlText, 
+    (err, result) => {
+      edition = { data: result.edition };
+      var p = new DOMParser;
+      var pp = p.parseFromString(xmlText, "text/xml");
+      edition.data.catalogs = findNodesXML(pp, "/edition/catalogs/*");
+      console.log("edition");
+      console.dir(edition);
   });
+  
+  return edition;
 }
 
 /** TODO: Credit pcs */
