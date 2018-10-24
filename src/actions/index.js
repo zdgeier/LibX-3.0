@@ -7,45 +7,13 @@ export const handleFetchEdition = (edition) => {
   return apiAction({
     baseType: FETCH_EDITION,
     fetch() {
-      /*
-      const gotEdition = (editionData) => {
-        if (Object.keys(editionData).length == 0) {
-          console.log('no existing edition, fetching edition');
-          return fetchEdition(edition);
-        }
-        else {
-          console.log('using existing edition');
-          console.dir(editionData);
-          return editionData.edition;
-        }
-      }
-      
-      return browser.storage.local.get(edition).then(gotEdition, 
-        (error) => {
-          console.log(error);
-        });*/
-      return fetchEdition(edition);
+      return fetch(edition)
+        .then(response => response.text())
+        .then(text => {
+          return parseEdition(text);
+        });
     }, 
   });
-}
-
-const fetchEdition = (editionURL) => {
-  return fetch(editionURL)
-    .then(response => response.text())
-    .then(text => {
-      console.log("text");
-      console.dir(text);
-      return parseEdition(text);
-      /*
-      console.log("edition");
-      console.dir(edition)
-      browser.storage.local.set({edition}).then(
-        () => console.log("edition fetched and stored locally"),  
-        (error) => console.log(error)
-      );
-      return edition;
-      */
-    });
 }
 
 const parseEdition = (xmlText) => {
@@ -53,18 +21,15 @@ const parseEdition = (xmlText) => {
   return new Promise((fulfill, reject) => {
     parser.parseString(xmlText, 
       (err, result) => {
-        console.dir(result);
         if (err) {
           reject(err);
           return;
         }
         var edition = result.edition;
         edition.catalogs = parseStringXML(xmlText, '/edition/catalogs/*');
-        browser.storage.local.set({edition}).then(
-          () => console.log("edition fetched and stored locally"),  
+        browser.storage.local.set({edition}).catch(
           (error) => console.log(error)
         );
-        console.dir(edition);
         fulfill({data: edition});
     });
   })

@@ -5,7 +5,7 @@ import MainDrawer from '../components/MainDrawer';
 import SettingsIcon from '@material-ui/icons/Settings';
 import SearchIcon from '@material-ui/icons/Search';
 import LinksIcon from '@material-ui/icons/Link';
-import SearchForm from '../components/forms/SearchForm';
+import SearchForm from '../components/SearchForm';
 import LinksForm from './forms/LinksForm';
 import Settings from './forms/SettingsForm';
 

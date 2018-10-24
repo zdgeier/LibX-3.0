@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Formik, Form, FastField as Field } from 'formik';
 import Button from '@material-ui/core/Button';
-import MaterialInput from '../../components/input/MaterialInput';
+import MaterialInput from '../../components/MaterialInput';
 import { handleFetchEdition } from '../../actions'
 import { connect } from 'react-redux'
 
@@ -51,7 +51,6 @@ SettingsForm.propTypes = {
 }
 
 const clearStorage = () => {
-  console.log("clearing");
   browser.storage.local.clear();
 }
 
