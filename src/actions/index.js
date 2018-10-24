@@ -1,5 +1,5 @@
 import xml2js from 'xml2js';
-import findNodesXML from '../util/editioncatalogreader'
+import parseStringXML from '../util/xpath'
 
 export const FETCH_EDITION = 'FETCH_EDITION'
 
@@ -7,15 +7,14 @@ export const handleFetchEdition = (edition) => {
   return apiAction({
     baseType: FETCH_EDITION,
     fetch() {
+      /*
       const gotEdition = (editionData) => {
-        console.dir(editionData);
-        //browser.storage.local.get().then((items) => console.dir(items))
         if (Object.keys(editionData).length == 0) {
-          console.log("fetching edition");
+          console.log('no existing edition, fetching edition');
           return fetchEdition(edition);
         }
         else {
-          console.log("using existing edition");
+          console.log('using existing edition');
           console.dir(editionData);
           return editionData.edition;
         }
@@ -24,7 +23,8 @@ export const handleFetchEdition = (edition) => {
       return browser.storage.local.get(edition).then(gotEdition, 
         (error) => {
           console.log(error);
-        });
+        });*/
+      return fetchEdition(edition);
     }, 
   });
 }
@@ -33,29 +33,41 @@ const fetchEdition = (editionURL) => {
   return fetch(editionURL)
     .then(response => response.text())
     .then(text => {
-      var edition = parseEdition(text);
+      console.log("text");
+      console.dir(text);
+      return parseEdition(text);
+      /*
+      console.log("edition");
+      console.dir(edition)
       browser.storage.local.set({edition}).then(
-        () => console.log("edition fetched and stored locally"), 
+        () => console.log("edition fetched and stored locally"),  
         (error) => console.log(error)
       );
       return edition;
+      */
     });
 }
 
 const parseEdition = (xmlText) => {
-  var edition = {};
   var parser = new xml2js.Parser({mergeAttrs: true, explicitArray: false});
-  parser.parseString(xmlText, 
-    (err, result) => {
-      edition = { data: result.edition };
-      var p = new DOMParser;
-      var pp = p.parseFromString(xmlText, "text/xml");
-      edition.data.catalogs = findNodesXML(pp, "/edition/catalogs/*");
-      console.log("edition");
-      console.dir(edition);
-  });
-  
-  return edition;
+  return new Promise((fulfill, reject) => {
+    parser.parseString(xmlText, 
+      (err, result) => {
+        console.dir(result);
+        if (err) {
+          reject(err);
+          return;
+        }
+        var edition = result.edition;
+        edition.catalogs = parseStringXML(xmlText, '/edition/catalogs/*');
+        browser.storage.local.set({edition}).then(
+          () => console.log("edition fetched and stored locally"),  
+          (error) => console.log(error)
+        );
+        console.dir(edition);
+        fulfill({data: edition});
+    });
+  })
 }
 
 /** TODO: Credit pcs */
@@ -72,9 +84,6 @@ export default function apiAction (
     });
     fetch().then(
       response => {
-        console.log("response");
-        console.log(response);
-        console.log(response.data);
         if (onSuccess) {
           onSuccess(dispatch, response.data, getState);
         }

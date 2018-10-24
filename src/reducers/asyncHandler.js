@@ -4,6 +4,9 @@ import { errorObject, loadedObject, loadingObject } from '../util/loadingObject'
 /** TODO: Credit pcs */
 export default function asyncHandler(baseType, initialState, transformResponse) {
   return (state, action) => {
+    console.log("test");
+    console.dir(state);
+    console.dir(action)
     if (state == null || action.type === baseType + ':RESET') {
       if (initialState == null) {
         return loadingObject();

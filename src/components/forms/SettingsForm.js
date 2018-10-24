@@ -24,6 +24,7 @@ const SettingsForm = ({ onSubmit }) => {
   return (
     <div className="SettingsForm">
       <Formik
+      displayName="SettingsForm"
       onSubmit={onSubmit}
       initialValues={initialSettingsValues}
       render={({ errors, dirty, isSubmitting }) => (

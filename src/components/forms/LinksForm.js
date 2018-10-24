@@ -10,11 +10,9 @@ const createTab = (href) => {
 
 const LinksForm = ({links}) => (
   <div className="LinksForm">
-    {links.map((values, index) => {
-      return (
+    {links.map((values, index) => 
         <Button key={index} onClick={() => createTab(values.href)}>{values.label}</Button>
-      );
-    })}
+    )}
   </div>
 )
 

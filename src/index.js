@@ -7,13 +7,15 @@ import thunk from 'redux-thunk'
 import rootReducer from './reducers'
 import { composeWithDevTools } from 'remote-redux-devtools';
 
-const store = createStore(rootReducer, composeWithDevTools(
-  applyMiddleware(thunk)
-));
-
-render(
-  <Provider store={store}>
-    <App/>
-  </Provider>,
-  document.getElementById('app')
-)
+browser.storage.local.get('edition').then((initState) => {
+  const store = createStore(rootReducer, initState, composeWithDevTools(
+    applyMiddleware(thunk)
+  ));
+  
+  render( 
+    <Provider store={store}>
+      <App/>
+    </Provider>,
+    document.getElementById('app')
+  )
+});
