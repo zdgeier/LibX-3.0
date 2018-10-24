@@ -1,3 +1,4 @@
+import { connect } from 'react-redux'
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
@@ -25,4 +26,10 @@ LinksForm.propTypes = {
   )),
 };
 
-export default LinksForm;
+const mapStateToProps = state => ({
+  links: state.edition.links.url
+})
+
+export default connect(
+  mapStateToProps
+)(LinksForm)

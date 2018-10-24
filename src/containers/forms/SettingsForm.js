@@ -1,9 +1,11 @@
-import React from "react";
+import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from "@material-ui/core/styles";
-import { Formik, Form, FastField as Field } from "formik";
-import Button from "@material-ui/core/Button";
-import MaterialInput from "../input/MaterialInput";
+import { withStyles } from '@material-ui/core/styles';
+import { Formik, Form, FastField as Field } from 'formik';
+import Button from '@material-ui/core/Button';
+import MaterialInput from '../../components/input/MaterialInput';
+import { handleFetchEdition } from '../../actions'
+import { connect } from 'react-redux'
 
 const styles = theme => ({
   container: {
@@ -43,6 +45,11 @@ const SettingsForm = ({ onSubmit }) => {
     </div>
   );
 }
+
+SettingsForm.propTypes = {
+  onSubmit: PropTypes.func
+}
+
 const clearStorage = () => {
   console.log("clearing");
   browser.storage.local.clear();
@@ -52,8 +59,11 @@ const initialSettingsValues = {
   edition: ""
 }
 
-SettingsForm.propTypes = {
-  onSubmit: PropTypes.func
-}
+const mapDispatchToProps = dispatch => ({
+  onSubmit: (values) => dispatch(handleFetchEdition(values.edition))
+})
 
-export default withStyles(styles)(SettingsForm);
+export default connect(
+  null,
+  mapDispatchToProps
+)(withStyles(styles)(SettingsForm))
