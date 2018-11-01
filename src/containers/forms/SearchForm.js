@@ -1,9 +1,11 @@
 import React from "react";
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux'
 import { withStyles } from "@material-ui/core/styles";
 import { Formik, Form, FastField as Field } from "formik";
 import Button from "@material-ui/core/Button";
-import MaterialInput from "./MaterialInput";
+import MaterialInput from "../../components/MaterialInput";
+import Scholar from '../../util/catalog/factory/scholar';
 
 const styles = theme => ({
   container: {
@@ -20,12 +22,6 @@ const styles = theme => ({
   }
 });
 
-const submitSearch = (values) => {
-  browser.tabs.create({
-    url: `https://catalog.lib.vt.edu/cgi-bin/koha/opac-search.pl?q=${values.keyword}`
-  });
-};
-
 const initialSearchValues = {
   keyword: "",
   title: "",
@@ -37,10 +33,18 @@ const initialSearchValues = {
 }
 
 class SearchForm extends React.Component {
+  submitSearch = (values) => {
+    var m = new Scholar(this.props.url);
+    console.dir(m.makeKeywordSearch(values.keyword));
+    browser.tabs.create({
+      url: m.makeKeywordSearch(values.keyword)
+    });
+  };
+  
   render() {
     return (
       <Formik
-        onSubmit={this.props.onSubmit}
+        onSubmit={this.submitSearch}
         initialValues={initialSearchValues}
         render={({ errors, dirty, isSubmitting }) => (
           <Form>
@@ -64,7 +68,14 @@ class SearchForm extends React.Component {
 SearchForm.propTypes = {
   onSubmit: PropTypes.func,
   initValues: PropTypes.object,
-  fields: PropTypes.array
+  fields: PropTypes.array,
+  url: PropTypes.string
 }
 
-export default withStyles(styles)(SearchForm);
+const mapStateToProps = state => ({
+  url: state.edition.catalogs[4].scholar.url
+})
+
+export default connect(
+  mapStateToProps
+)(withStyles(styles)(SearchForm));

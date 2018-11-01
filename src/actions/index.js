@@ -27,6 +27,7 @@ const parseEdition = (xmlText) => {
         }
         var edition = result.edition;
         edition.catalogs = parseStringXML(xmlText, '/edition/catalogs/*');
+        console.dir(edition);
         browser.storage.local.set({edition}).catch(
           (error) => console.log(error)
         );
