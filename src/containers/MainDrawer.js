@@ -1,7 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
+import { handleSelectDrawer } from '../actions/';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -83,17 +85,17 @@ const styles = theme => ({
   },
 });
 
-const DrawerListItem = ({onClick, title, content, icon}) => (
-  <ListItem button onClick={() => onClick(content)}>
+const DrawerListItem = ({index, onClick, title, icon}) => (
+  <ListItem button onClick={() => onClick(index)}>
     <ListItemIcon>{icon}</ListItemIcon>
     <ListItemText primary={title} />
   </ListItem>
 );
 
 DrawerListItem.propTypes = {
+  index: PropTypes.number,
   onClick: PropTypes.func,
   title: PropTypes.string,
-  content: PropTypes.object,
   icon: PropTypes.object,
 }
 
@@ -101,7 +103,8 @@ const ListItems = ({items, onClick}) => (
   items.map((desc, index) => {
     return (
       <DrawerListItem 
-        key={index} 
+        key={index}
+        index={index}
         title={desc.props.title} 
         icon={desc.props.icon} 
         content={desc}
@@ -111,14 +114,8 @@ const ListItems = ({items, onClick}) => (
 );
 
 class MainDrawer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleContentSelected = this.handleContentSelected.bind(this);
-  }
-
   state = {
-    open: false,
-    selectedContent: React.Children.toArray(this.props.children)[0]
+    open: false
   };
 
   handleDrawerOpen = () => {
@@ -129,10 +126,6 @@ class MainDrawer extends React.Component {
     this.setState({ open: false });
   };
   
-  handleContentSelected(selected) {
-    this.setState({selectedContent: selected});
-  }
-
   render() {
     const { classes, theme } = this.props;
     return (
@@ -169,13 +162,13 @@ class MainDrawer extends React.Component {
           </div>
           <Divider />
           <List>
-            <ListItems items={React.Children.toArray(this.props.children)} onClick={this.handleContentSelected} />
+            <ListItems items={React.Children.toArray(this.props.children)} onClick={this.props.setDrawerIndex} />
           </List>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <div className="main-content">
-            {this.state.selectedContent}
+            {React.Children.toArray(this.props.children)[this.props.drawerIndex]}
           </div>
         </main>
       </div>
@@ -186,8 +179,21 @@ class MainDrawer extends React.Component {
 MainDrawer.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
-  title: PropTypes.string,
-  children: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
+  title: PropTypes.string.isRequired,
+  children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
+  setDrawerIndex: PropTypes.func.isRequired,
+  drawerIndex: PropTypes.number.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(MainDrawer);
+const mapStateToProps = state => ({
+  drawerIndex: state.drawerIndex
+})
+
+const mapDispatchToProps = dispatch => ({
+  setDrawerIndex: (index) => dispatch(handleSelectDrawer(index))
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles, {withTheme: true})(MainDrawer));

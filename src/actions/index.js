@@ -1,7 +1,15 @@
-import xml2js from 'xml2js';
+import xml2js from 'xml2js'
 import parseStringXML from '../util/xpath'
 
 export const FETCH_EDITION = 'FETCH_EDITION'
+export const SELECT_DRAWER = 'SELECT_DRAWER'
+
+export const handleSelectDrawer = (selectedDrawer) => {
+  return {
+    type: SELECT_DRAWER,
+    index: selectedDrawer
+  }
+}
 
 export const handleFetchEdition = (edition) => {
   return apiAction({

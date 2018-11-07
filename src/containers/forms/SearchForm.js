@@ -35,7 +35,7 @@ const initialSearchValues = {
 }
 
 const getURL = (edition) => {
-  if (edition.catalogs == undefined) {
+  if (edition.catalogs === undefined || edition.catalogs[4].scolar === undefined) {
     return null;
   }
   else {

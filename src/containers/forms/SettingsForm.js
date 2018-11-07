@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Formik, Form, FastField as Field } from 'formik';
 import Button from '@material-ui/core/Button';
 import MaterialInput from '../../components/MaterialInput';
-import { handleFetchEdition } from '../../actions'
+import { handleFetchEdition, handleSelectDrawer } from '../../actions'
 import { connect } from 'react-redux'
 
 const styles = theme => ({
@@ -59,7 +59,9 @@ const initialSettingsValues = {
 }
 
 const mapDispatchToProps = dispatch => ({
-  onSubmit: (values) => dispatch(handleFetchEdition(values.edition))
+  onSubmit: (values) => {
+    dispatch(handleFetchEdition(values.edition));
+  }
 })
 
 export default connect(

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
-import MainDrawer from '../components/MainDrawer';
+import MainDrawer from './MainDrawer';
 import SettingsIcon from '@material-ui/icons/Settings';
 import SearchIcon from '@material-ui/icons/Search';
 import LinksIcon from '@material-ui/icons/Link';
