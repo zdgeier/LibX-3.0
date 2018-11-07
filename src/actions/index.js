@@ -39,6 +39,7 @@ const parseEdition = (xmlText) => {
         var edition = result.edition;
         edition.catalogs = parseStringXML(xmlText, '/edition/catalogs/*');
         console.dir(edition);
+<<<<<<< HEAD
         browser.storage.local.set({edition}).then(
           (_data) => {
             fulfill({data: edition})
@@ -47,6 +48,10 @@ const parseEdition = (xmlText) => {
             console.log(error)
             reject(error);
           }
+=======
+        browser.storage.local.set({edition}).catch(
+          (error) => console.log(error)
+>>>>>>> 5c9baed809c064c618cb09cafaa0a0422076254c
         );
     });
   })

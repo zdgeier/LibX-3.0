@@ -37,8 +37,14 @@ const initialSearchValues = {
 class SearchForm extends React.Component {
   submitSearch = (values) => {
     var m = new Scholar(this.props.url);
+<<<<<<< HEAD:src/containers/forms/SearchForm.js
     browser.tabs.create({
       url: m.makeAuthorSearch(values.author)
+=======
+    console.dir(m.makeKeywordSearch(values.keyword));
+    browser.tabs.create({
+      url: m.makeKeywordSearch(values.keyword)
+>>>>>>> 5c9baed809c064c618cb09cafaa0a0422076254c:src/containers/forms/SearchForm.js
     });
   };
   
