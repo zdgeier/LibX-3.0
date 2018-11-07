@@ -21,9 +21,6 @@ const styles = theme => ({
   },
   menu: {
     width: 200
-  },
-  LinksForm: {
-    textColor: "red"
   }
 });
 

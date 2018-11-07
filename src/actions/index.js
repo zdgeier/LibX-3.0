@@ -4,14 +4,25 @@ import parseStringXML from '../util/xpath'
 export const FETCH_EDITION = 'FETCH_EDITION'
 
 export const handleFetchEdition = (edition) => {
+  console.log("HI");
+  console.dir(edition);
   return apiAction({
     baseType: FETCH_EDITION,
     fetch() {
-      return fetch(edition)
-        .then(response => response.text())
-        .then(text => {
-          return parseEdition(text);
+      /*
+      if (edition == null) { // on open
+        return browser.storage.local.get('edition').then((e) => {
+          return e;
         });
+      }
+      else {
+        */
+        return fetch(edition)
+          .then(response => response.text())
+          .then(text => {
+            return parseEdition(text);
+        });
+      //}
     }, 
   });
 }
@@ -28,10 +39,15 @@ const parseEdition = (xmlText) => {
         var edition = result.edition;
         edition.catalogs = parseStringXML(xmlText, '/edition/catalogs/*');
         console.dir(edition);
-        browser.storage.local.set({edition}).catch(
-          (error) => console.log(error)
+        browser.storage.local.set({edition}).then(
+          (_data) => {
+            fulfill({data: edition})
+          }).catch(
+          (error) => {
+            console.log(error)
+            reject(error);
+          }
         );
-        fulfill({data: edition});
     });
   })
 }
