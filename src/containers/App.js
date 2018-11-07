@@ -15,15 +15,26 @@ class App extends React.Component {
   }
 
   render() {
-    return (
-      <div className='App'>
-        <MainDrawer title='LibX'>
-          <SearchForm title='Search' icon={<SearchIcon/>}/>
-          <LinksForm title='Links' icon={<LinksIcon/>}/>
-          <Settings title='Settings' icon={<SettingsIcon/>}/>
-        </MainDrawer>
-      </div>
-   )
+    if (!("name" in this.props.edition)) {
+      return (
+        <div className='App'>
+          <MainDrawer title='No edition'>
+            <Settings title='Settings' icon={<SettingsIcon/>}/>
+          </MainDrawer>
+        </div>
+      );
+    }
+    else {
+      return (
+        <div className='App'>
+          <MainDrawer title='LibX'>
+            <SearchForm title='Search' icon={<SearchIcon/>}/>
+            <LinksForm title='Links' icon={<LinksIcon/>}/>
+            <Settings title='Settings' icon={<SettingsIcon/>}/>
+          </MainDrawer>
+        </div>
+      );
+    }
   }
 }
 

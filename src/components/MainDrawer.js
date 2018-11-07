@@ -169,7 +169,7 @@ class MainDrawer extends React.Component {
           </div>
           <Divider />
           <List>
-            <ListItems items={this.props.children} onClick={this.handleContentSelected} />
+            <ListItems items={React.Children.toArray(this.props.children)} onClick={this.handleContentSelected} />
           </List>
         </Drawer>
         <main className={classes.content}>
@@ -187,7 +187,7 @@ MainDrawer.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
   title: PropTypes.string,
-  children: PropTypes.array,
+  children: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 };
 
 export default withStyles(styles, { withTheme: true })(MainDrawer);

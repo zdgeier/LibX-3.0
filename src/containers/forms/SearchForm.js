@@ -34,17 +34,20 @@ const initialSearchValues = {
   callNumber: ""
 }
 
+const getURL = (edition) => {
+  if (edition.catalogs == undefined) {
+    return null;
+  }
+  else {
+    return edition.catalogs[4].scholar.url;
+  }
+}
+
 class SearchForm extends React.Component {
   submitSearch = (values) => {
     var m = new Scholar(this.props.url);
-<<<<<<< HEAD:src/containers/forms/SearchForm.js
-    browser.tabs.create({
-      url: m.makeAuthorSearch(values.author)
-=======
-    console.dir(m.makeKeywordSearch(values.keyword));
     browser.tabs.create({
       url: m.makeKeywordSearch(values.keyword)
->>>>>>> 5c9baed809c064c618cb09cafaa0a0422076254c:src/containers/forms/SearchForm.js
     });
   };
   
@@ -80,7 +83,7 @@ SearchForm.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  url: state.edition.catalogs[4].scholar.url
+  url: getURL(state.edition)
 })
 
 export default connect(

@@ -8,17 +8,15 @@ import rootReducer from './reducers'
 import { composeWithDevTools } from 'remote-redux-devtools';
 import { handleFetchEdition } from './actions/'
 
-browser.storage.local.get('edition').then((initState) => {
-  const store = createStore(rootReducer, initState, composeWithDevTools(
-    applyMiddleware(thunk)
-  ));
+const store = createStore(rootReducer, composeWithDevTools(
+  applyMiddleware(thunk)
+));
 
-  store.dispatch(handleFetchEdition('http://libx.org/editions/9D/49/9D49C04A/config.xml'));
-  
-  render( 
-    <Provider store={store}>
-      <App/>
-    </Provider>,
-    document.getElementById('app')
-  )
-});
+store.dispatch(handleFetchEdition(null));
+
+render( 
+  <Provider store={store}>
+    <App/>
+  </Provider>,
+  document.getElementById('app')
+)
