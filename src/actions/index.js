@@ -1,6 +1,9 @@
 import xml2js from 'xml2js'
 import parseStringXML from '../util/xpath'
 
+const MILLI_PER_HOUR = 36e5;
+const VALID_EDITION_HOURS = 0.001; 
+
 export const FETCH_EDITION = 'FETCH_EDITION'
 export const SELECT_DRAWER = 'SELECT_DRAWER'
 
@@ -19,30 +22,39 @@ export const handleFetchEdition = (edition) => {
         return getLocalEdition(); 
       }
       else { 
-        return fetch(edition)
-          .then(response => response.text())
-          .then(text => {
-            return parseEdition(text);
-        });
+        return getRemoteEdition(edition);
       }
     }, 
   });
 }
 
 const getLocalEdition = () => {
-  return new Promise((fulfill, reject) => 
-    browser.storage.local.get('edition').then(
-      e => {
-        console.dir({data: e.edition});
-        fulfill({data: e.edition});
-      },
-      err => reject(err),
+  return browser.storage.local.get('edition').then(
+      result => {
+        var lastFetched = (new Date().getTime() - result.edition.timestamp) / MILLI_PER_HOUR;
+        if (lastFetched > VALID_EDITION_HOURS) {
+          return getRemoteEdition(result.edition.url);
+        }
+        else {
+          return {data: result.edition};
+        }
+      }
     )
-  );
 }
 
-const parseEdition = (xmlText) => {
+const getRemoteEdition = (edition) => {
+  console.log("get remote");
+  return fetch(edition)
+    .then(response => response.text())
+    .then(text => {
+      console.log("test");
+      return parseEdition(edition, text);
+  });
+}
+
+const parseEdition = (url, xmlText) => {
   var parser = new xml2js.Parser({mergeAttrs: true, explicitArray: false});
+  console.dir(url);
   return new Promise((fulfill, reject) => {
     parser.parseString(xmlText, 
       (err, result) => {
@@ -50,12 +62,14 @@ const parseEdition = (xmlText) => {
           reject(err);
           return;
         }
+
         var edition = result.edition;
         edition.catalogs = parseStringXML(xmlText, '/edition/catalogs/*');
+        edition.timestamp = new Date().getTime();
+        edition.url = url;
+
         browser.storage.local.set({edition}).then(
           (_data) => {
-            
-            console.dir({data: edition});
             fulfill({data: edition})
           }).catch(
           (error) => {
