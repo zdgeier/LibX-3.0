@@ -2,7 +2,7 @@ import xml2js from 'xml2js'
 import parseStringXML from '../util/xpath'
 
 const MILLI_PER_HOUR = 36e5;
-const VALID_EDITION_HOURS = 0.001; 
+const VALID_EDITION_HOURS = 24; 
 
 export const FETCH_EDITION = 'FETCH_EDITION'
 export const SELECT_DRAWER = 'SELECT_DRAWER'
@@ -43,11 +43,9 @@ const getLocalEdition = () => {
 }
 
 const getRemoteEdition = (edition) => {
-  console.log("get remote");
   return fetch(edition)
     .then(response => response.text())
     .then(text => {
-      console.log("test");
       return parseEdition(edition, text);
   });
 }
