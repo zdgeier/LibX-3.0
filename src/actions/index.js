@@ -1,3 +1,10 @@
+/**
+ * TODO:
+ * Database dropdown
+ * proxy
+ * fix startup loading (what if no network)
+ */
+
 import xml2js from 'xml2js'
 import parseStringXML from '../util/xpath'
 
