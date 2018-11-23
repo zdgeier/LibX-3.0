@@ -1,23 +1,22 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import TextField from "@material-ui/core/TextField";
+import Select from "@material-ui/core/Select";
 
-const MaterialInput = ({
+const MaterialSelect = ({
     field: { /* value, */ ...fields },
     form: { touched, errors, ...rest },
     ...props
   }) => {
     return (
-      <TextField
+      <Select
         {...props}
         {...fields}
         error={Boolean(touched[fields.name] && errors[fields.name])}
-        helperText={touched[fields.name] && errors[fields.name]}
       />
     );
 };
 
-MaterialInput.propTypes = {
+MaterialSelect.propTypes = {
   field: PropTypes.shape({
     name: PropTypes.string,
     value: PropTypes.any,
@@ -29,4 +28,4 @@ MaterialInput.propTypes = {
   label: PropTypes.string.isRequired
 };
 
-export default MaterialInput;
+export default MaterialSelect;

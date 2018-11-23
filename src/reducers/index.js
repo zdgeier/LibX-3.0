@@ -13,5 +13,5 @@ const drawerIndex = (state = 0, action) => {
 
 export default combineReducers({
   edition: asyncHandler(FETCH_EDITION),
-  drawerIndex: drawerIndex,
+  drawerIndex: drawerIndex
 })

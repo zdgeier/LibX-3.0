@@ -127,7 +127,6 @@ class Catalog {
         if (fields.length == 0) {//nothing entered
             fields = [{searchType: 'Y', searchTerms: ""}];
         }
-        console.dir(fields);
         for (var i = 0; i < fields.length; i++) {
             if (!this.supportsSearchType(fields[i].searchType)) {
                 console.log(this.name + " does not support search type " + fields[i].searchType);
