@@ -73,6 +73,10 @@ const parseEdition = (url, xmlText) => {
         edition.catalogs = parseStringXML(xmlText, '/edition/catalogs/*');
         edition.timestamp = new Date().getTime();
         edition.url = url;
+        edition.searchoptionlabels = edition.searchoptions.searchoption.reduce((obj,item) => {
+          obj[item.value] = item.label; 
+          return obj;
+        }, {});
 
         browser.storage.local.set({edition}).then(
           (_data) => {

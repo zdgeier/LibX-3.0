@@ -1,5 +1,3 @@
-// TODO: Expand react store to include search entries
-
 import React from "react";
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
@@ -29,14 +27,14 @@ const styles = theme => ({
 
 const initialSearchValues = {
   catalog: 0,
-  keyword: "",
-  title: "",
-  journalTitle: "",
-  author: "",
-  subject: "",
-  isbn: "",
-  callNumber: ""
+  Y: "",
+  t: "",
+  a: "",
+  d: "",
+  i: "",
+  c: ""
 }
+
 
 const getURL = (edition) => {
   if (edition.catalogs === undefined || edition.catalogs[4].scolar === undefined) {
@@ -47,12 +45,38 @@ const getURL = (edition) => {
   }
 }
 
+const getSearchObject = (values) => {
+  return Object.keys(values).map(i => {
+    return ({searchType: i, searchTerms: values[i]})
+  })
+}
+
+const getSearchFields = (values, catalogs, labels) => {
+  var currCatalog = catalogs[values.catalog];
+  var catalogOptions = currCatalog[Object.keys(currCatalog)[0]].options.split(";");
+
+  return catalogOptions.map((option, i) => 
+    <Field 
+      key={i} 
+      name={option} 
+      label={labels[option]} 
+      component={MaterialInput} />)
+}
+
 class SearchForm extends React.Component {
+  getInitialSearchValues = () => {
+    var initialSearchValues = {}
+    initialSearchValues.catalog = 0;
+    for(var i = 0; i < this.props.searchoptions.length; i++) {
+      initialSearchValues[this.props.searchoptions[i].value] = "";
+    }
+    return initialSearchValues;
+  }
+
   submitSearch = (values) => {
     var m = new Scholar(this.props.url);
-    console.dir(values)
     browser.tabs.create({
-      url: m.makeAdvancedSearch(values)
+      url: m.makeAdvancedSearch(getSearchObject(values))
     });
   };
   
@@ -60,8 +84,8 @@ class SearchForm extends React.Component {
     return (
       <Formik
         onSubmit={this.submitSearch}
-        initialValues={initialSearchValues}
-        render={({ errors, dirty, isSubmitting }) => (
+        initialValues={this.getInitialSearchValues()}
+        render={({ values }) => (
           <Form>
             <Field 
               name="catalog" 
@@ -71,15 +95,8 @@ class SearchForm extends React.Component {
                 <MenuItem key={index} value={index}>{Object.values(value)[0].name}</MenuItem>
               )}
             </Field>
-            <Field name="Y" label="Keyword" component={MaterialInput} />
-            <Field name="t" label="Title" component={MaterialInput} />
-            <Field name="jt" label="Journal Title" component={MaterialInput} />
-            <Field name="a" label="Author" component={MaterialInput} />
-            <Field name="s" label="Subject" component={MaterialInput} />
-            <Field name="i" label="ISBN/ISSN" component={MaterialInput} />
-            <Field name="cn" label="Call Number" component={MaterialInput} />
+            {getSearchFields(values, this.props.catalogs, this.props.searchoptionlabels)}
             <Button type="submit" className="btn btn-default">Submit</Button>
-            <Persist name="search-form"/>
           </Form>
         )}
       />
@@ -97,7 +114,9 @@ SearchForm.propTypes = {
 
 const mapStateToProps = state => ({
   url: getURL(state.edition),
-  catalogs: state.edition.catalogs
+  catalogs: state.edition.catalogs,
+  searchoptions: state.edition.searchoptions.searchoption,
+  searchoptionlabels: state.edition.searchoptionlabels
 })
 
 export default connect(
