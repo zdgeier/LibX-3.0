@@ -1,10 +1,10 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import { FormikProps, connect } from 'formik';
 import debounce from 'lodash.debounce';
 import isEqual from 'react-fast-compare';
 
-
-class PersistImpl extends React.Component {
+class Persist extends React.Component {
   static defaultProps = {
     debounce: 100,
   };
@@ -33,4 +33,10 @@ class PersistImpl extends React.Component {
   }
 }
 
-export const Persist = connect(PersistImpl);
+Persist.propTypes = {
+  name: PropTypes.string,
+  formik: PropTypes.object,
+  debounce: PropTypes.number
+}
+
+export default connect(Persist);

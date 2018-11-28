@@ -4,15 +4,14 @@ import { connect } from 'react-redux'
 import { withStyles } from "@material-ui/core/styles";
 import { Formik, Field, Form } from "formik";
 import Button from "@material-ui/core/Button";
+import Persist from "../../components/PersistStorage";
 import MaterialInput from "../../components/MaterialInput";
 import { Select, MenuItem, OutlinedInput } from "@material-ui/core";
-
 
 import Scholar from '../../util/catalog/factory/scholar'
 import Bookmarklet from '../../util/catalog/factory/bookmarklet'
 
 const CatalogFactory = (catalogName, url, searchoptions) => {
-    console.dir({catalogName, url, searchoptions})
     switch (catalogName) {
         case 'scholar':
             return new Scholar(url);
@@ -94,7 +93,6 @@ class SearchForm extends React.Component {
   }
 
   render() {
-    console.dir(this.props.catalogs)
     return (
       <div>
         <Formik
@@ -106,16 +104,8 @@ class SearchForm extends React.Component {
                   value = {this.state.catalogIndex}
                   onChange = {(event) => this.handleChange(event, values, setFieldValue)}
                   className={this.props.classes.select}
-                  input={
-                    <OutlinedInput
-                      name="catalog"
-                      id="catalog-select"
-                    />
-                  }
-                  inputProps={{
-                    name: 'catalog',
-                    id: 'catalog-select',
-                  }}>
+                  input={<OutlinedInput name="catalog" id="catalog-select"/>}
+                  inputProps={{name: 'catalog', id: 'catalog-select'}}>
                 {this.props.catalogs.map((value, index) => 
                   <MenuItem key={index} value={index}>{Object.values(value)[0].name}</MenuItem>
                 )}
@@ -124,6 +114,7 @@ class SearchForm extends React.Component {
               {this.getSearchFields()}
               <br/>
               <Button type="submit" variant="outlined" className={this.props.classes.button}>Submit</Button>
+              <Persist name="SearchForm"/>
             </Form>
           )}
         />
