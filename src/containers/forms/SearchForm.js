@@ -32,36 +32,24 @@ const styles = theme => ({
     marginRight: theme.spacing.unit,
     width: 200
   },
+  select: {
+    margin: theme.spacing.unit,
+  },
+  searchField: {
+    margin: theme.spacing.unit,
+  },
+  button: {
+    margin: theme.spacing.unit,
+  },
   menu: {
     width: 200
   }
 });
 
-const getURL = (edition) => {
-  if (edition.catalogs === undefined || edition.catalogs[4].scholar === undefined) {
-    return null;
-  }
-  else {
-    return edition.catalogs[4].scholar.url;
-  }
-}
-
 const getSearchObject = (values) => {
   return Object.keys(values).map(i => {
     return ({searchType: i, searchTerms: values[i]})
   })
-}
-
-const getSearchFields = (catalogIndex, catalogs, labels) => {
-  var currCatalog = catalogs[catalogIndex];
-  var catalogOptions = currCatalog[Object.keys(currCatalog)[0]].options.split(";");
-
-  return catalogOptions.map((option, i) => 
-    <Field 
-      key={i} 
-      name={option} 
-      label={labels[option]} 
-      component={MaterialInput} />)
 }
 
 const getInitialSearchValues = (catalogOptions) => {
@@ -78,9 +66,20 @@ class SearchForm extends React.Component {
     this.state = {catalogIndex: 0}
   }
 
+  getSearchFields = () => {
+    var currCatalog = this.props.catalogs[this.state.catalogIndex];
+    var catalogOptions = currCatalog[Object.keys(currCatalog)[0]].options.split(";");
+  
+    return catalogOptions.map((option, i) => 
+      <Field 
+        key={i} 
+        name={option} 
+        className={this.props.classes.searchField}
+        label={this.props.searchoptionlabels[option]} 
+        component={MaterialInput} />)
+  }
+
   handleChange = (event, values, setFieldValue) => {
-    console.dir(values)
-    console.dir(setFieldValue)
     for (var value in values) {
       setFieldValue(value, "", true);
     }
@@ -88,10 +87,7 @@ class SearchForm extends React.Component {
   }
 
   submitSearch = (values) => {
-    console.dir(this.state.catalogIndex)
     var currCatalog = this.props.catalogs[this.state.catalogIndex];
-    console.dir(this.props.catalogs)
-    console.dir(Object.keys(currCatalog)[0]);
     var catalogName = Object.keys(currCatalog)[0];
     var url = currCatalog[Object.keys(currCatalog)[0]].url;
     var m = CatalogFactory(catalogName, url, this.props.searchoptions);
@@ -103,7 +99,7 @@ class SearchForm extends React.Component {
   render() {
     console.dir(this.props.catalogs)
     return (
-      <div className="SearchForm">
+      <div>
         <Formik
           initialValues = {getInitialSearchValues(this.props.searchoptions)}
           onSubmit = {this.submitSearch}
@@ -112,6 +108,7 @@ class SearchForm extends React.Component {
               <Select
                   value = {this.state.catalogIndex}
                   onChange = {(event) => this.handleChange(event, values, setFieldValue)}
+                  className={this.props.classes.select}
                   inputProps={{
                     name: 'catalog',
                     id: 'catalog-select',
@@ -120,8 +117,10 @@ class SearchForm extends React.Component {
                   <MenuItem key={index} value={index}>{Object.values(value)[0].name}</MenuItem>
                 )}
               </Select>
-              {getSearchFields(this.state.catalogIndex, this.props.catalogs, this.props.searchoptionlabels)}
-              <Button type="submit" className="btn btn-default">Submit</Button>
+              <br/>
+              {this.getSearchFields()}
+              <br/>
+              <Button type="submit" className={this.props.classes.button}>Submit</Button>
             </Form>
           )}
         />
@@ -136,11 +135,11 @@ SearchForm.propTypes = {
   catalogs: PropTypes.array,
   searchoptions: PropTypes.array,
   searchoptionlabels: PropTypes.object,
-  catalogIndex: PropTypes.number
+  catalogIndex: PropTypes.number,
+  classes: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
-  url: getURL(state.edition),
   catalogs: state.edition.catalogs,
   searchoptions: state.edition.searchoptions.searchoption,
   searchoptionlabels: state.edition.searchoptionlabels

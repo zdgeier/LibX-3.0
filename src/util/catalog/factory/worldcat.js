@@ -33,6 +33,11 @@
 import Catalog from '../catalog';
  
 class Worldcat extends Catalog {
+    constructor (url) {
+        super();
+        this.url = url;
+    }
+
     xisbn = { opacid: "worldcat" }
 
     convert = function (stype) {
