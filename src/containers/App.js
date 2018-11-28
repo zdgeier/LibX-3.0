@@ -5,7 +5,7 @@ import MainDrawer from './MainDrawer';
 import SettingsIcon from '@material-ui/icons/Settings';
 import SearchIcon from '@material-ui/icons/Search';
 import LinksIcon from '@material-ui/icons/Link';
-import SearchForm from './forms/SearchForm';
+import CatalogSearch from './forms/CatalogSearch';
 import LinksForm from './forms/LinksForm';
 import Settings from './forms/SettingsForm';
 
@@ -28,7 +28,7 @@ class App extends React.Component {
       return (
         <div className='App'>
           <MainDrawer title='LibX'>
-            <SearchForm title='Search' icon={<SearchIcon/>}/>
+            <CatalogSearch title='Search' icon={<SearchIcon/>}/>
             <LinksForm title='Links' icon={<LinksIcon/>}/>
             <Settings title='Settings' icon={<SettingsIcon/>}/>
           </MainDrawer>

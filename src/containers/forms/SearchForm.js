@@ -2,12 +2,9 @@ import React from "react";
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { withStyles } from "@material-ui/core/styles";
-import { Formik, Form, FastField as Field } from "formik";
+import { Formik, Field, Form } from "formik";
 import Button from "@material-ui/core/Button";
-import { Persist } from '../../components/PersistStorage';
-import MenuItem from "@material-ui/core/MenuItem";
 import MaterialInput from "../../components/MaterialInput";
-import MaterialSelect from "../../components/MaterialSelect";
 import Scholar from '../../util/catalog/factory/scholar';
 
 const styles = theme => ({
@@ -25,17 +22,6 @@ const styles = theme => ({
   }
 });
 
-const initialSearchValues = {
-  catalog: 0,
-  Y: "",
-  t: "",
-  a: "",
-  d: "",
-  i: "",
-  c: ""
-}
-
-
 const getURL = (edition) => {
   if (edition.catalogs === undefined || edition.catalogs[4].scolar === undefined) {
     return null;
@@ -51,8 +37,8 @@ const getSearchObject = (values) => {
   })
 }
 
-const getSearchFields = (values, catalogs, labels) => {
-  var currCatalog = catalogs[values.catalog];
+const getSearchFields = (catalogIndex, catalogs, labels) => {
+  var currCatalog = catalogs[catalogIndex];
   var catalogOptions = currCatalog[Object.keys(currCatalog)[0]].options.split(";");
 
   return catalogOptions.map((option, i) => 
@@ -63,53 +49,46 @@ const getSearchFields = (values, catalogs, labels) => {
       component={MaterialInput} />)
 }
 
-class SearchForm extends React.Component {
-  getInitialSearchValues = () => {
-    var initialSearchValues = {}
-    initialSearchValues.catalog = 0;
-    for(var i = 0; i < this.props.searchoptions.length; i++) {
-      initialSearchValues[this.props.searchoptions[i].value] = "";
-    }
-    return initialSearchValues;
-  }
+const getInitialSearchValues = (catalogIndex, catalogs) => {
+  var currCatalog = catalogs[catalogIndex];
+  var catalogOptions = currCatalog[Object.keys(currCatalog)[0]].options.split(";");
+  console.dir(catalogOptions)
 
-  submitSearch = (values) => {
-    var m = new Scholar(this.props.url);
-    browser.tabs.create({
-      url: m.makeAdvancedSearch(getSearchObject(values))
-    });
-  };
-  
+  var initialSearchValues = {}
+  for(var i = 0; i < catalogOptions.length; i++) {
+    initialSearchValues[catalogOptions[i]] = "";
+  }
+  console.dir(initialSearchValues)
+  return initialSearchValues;
+}
+
+class SearchForm extends React.Component {
   render() {
+    console.dir(this.props.catalogs)
     return (
-      <Formik
-        onSubmit={this.submitSearch}
-        initialValues={this.getInitialSearchValues()}
-        render={({ values }) => (
-          <Form>
-            <Field 
-              name="catalog" 
-              label="Catalog" 
-              component={MaterialSelect}>
-              {this.props.catalogs.map((value, index) => 
-                <MenuItem key={index} value={index}>{Object.values(value)[0].name}</MenuItem>
-              )}
-            </Field>
-            {getSearchFields(values, this.props.catalogs, this.props.searchoptionlabels)}
-            <Button type="submit" className="btn btn-default">Submit</Button>
-          </Form>
-        )}
-      />
+      <div className="SearchForm">
+        <Formik
+          initialValues = {getInitialSearchValues(this.props.catalogIndex, this.props.catalogs)}
+          onSubmit = {this.props.handleSubmit}
+          render = {() => (
+            <Form>
+              {getSearchFields(this.props.catalogIndex, this.props.catalogs, this.props.searchoptionlabels)}
+              <Button type="submit" className="btn btn-default">Submit</Button>
+            </Form>
+          )}
+        />
+      </div>
     );
   }
 }
 
 SearchForm.propTypes = {
-  onSubmit: PropTypes.func,
-  initValues: PropTypes.object,
-  fields: PropTypes.array,
-  url: PropTypes.string,
-  catalogs: PropTypes.array
+  values: PropTypes.object,
+  handleSubmit: PropTypes.func,
+  catalogs: PropTypes.array,
+  searchoptions: PropTypes.array,
+  searchoptionlabels: PropTypes.object,
+  catalogIndex: PropTypes.number
 }
 
 const mapStateToProps = state => ({
@@ -119,6 +98,4 @@ const mapStateToProps = state => ({
   searchoptionlabels: state.edition.searchoptionlabels
 })
 
-export default connect(
-  mapStateToProps
-)(withStyles(styles)(SearchForm));
+export default connect(mapStateToProps)(withStyles(styles)(SearchForm));
