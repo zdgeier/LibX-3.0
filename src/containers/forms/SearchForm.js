@@ -5,8 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { Formik, Field, Form } from "formik";
 import Button from "@material-ui/core/Button";
 import MaterialInput from "../../components/MaterialInput";
-//import { CatalogFactory } from '../../util/catalog/catalog'
-import { Select, MenuItem } from "@material-ui/core";
+import { Select, MenuItem, OutlinedInput } from "@material-ui/core";
 
 
 import Scholar from '../../util/catalog/factory/scholar'
@@ -40,9 +39,6 @@ const styles = theme => ({
   },
   button: {
     margin: theme.spacing.unit,
-  },
-  menu: {
-    width: 200
   }
 });
 
@@ -76,6 +72,7 @@ class SearchForm extends React.Component {
         name={option} 
         className={this.props.classes.searchField}
         label={this.props.searchoptionlabels[option]} 
+        variant="outlined"
         component={MaterialInput} />)
   }
 
@@ -109,6 +106,12 @@ class SearchForm extends React.Component {
                   value = {this.state.catalogIndex}
                   onChange = {(event) => this.handleChange(event, values, setFieldValue)}
                   className={this.props.classes.select}
+                  input={
+                    <OutlinedInput
+                      name="catalog"
+                      id="catalog-select"
+                    />
+                  }
                   inputProps={{
                     name: 'catalog',
                     id: 'catalog-select',
@@ -120,7 +123,7 @@ class SearchForm extends React.Component {
               <br/>
               {this.getSearchFields()}
               <br/>
-              <Button type="submit" className={this.props.classes.button}>Submit</Button>
+              <Button type="submit" variant="outlined" className={this.props.classes.button}>Submit</Button>
             </Form>
           )}
         />
