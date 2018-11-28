@@ -20,26 +20,30 @@
  * Contributor(s): Godmar Back (godmar@gmail.com)
  *
  * ***** END LICENSE BLOCK ***** */
+import Catalog from '../catalog'
 
 /**
  * 	Support generic "bookmarklet" style searches
  * 	The id's %t, %jt etc. in the URL are being replaced with the entered terms
- *	@name libx.catalog.factory.bookmarklet
- *	@constructor
- *	@augments libx.catalog.Catalog
  */
 class Bookmarklet extends Catalog {
-	 
+    constructor (url, searchoptions) {
+        super();
+        this.url = url;
+        this.searchoptions = searchoptions;
+    }
+    
     makeSearch = (/**String*/ stype, /**String*/ sterm) => {
         return this.makeAdvancedSearch([{searchType: stype, searchTerms: sterm}]);
     }
     
     makeAdvancedSearch = (/**[{searchType: {String}, searchTerms: {String}}]*/fields) => {
         var usePost = this.postdata != null;
+        var argtemplate;
         if (usePost) {
-            var argtemplate = this.postdata;
+            argtemplate = this.postdata;
         } else {
-            var argtemplate = this.url;
+            argtemplate = this.url;
         }
 
         /* Example of URL that uses %SWITCH statement and %termN:
@@ -62,11 +66,11 @@ class Bookmarklet extends Catalog {
                     if (m[1] <= fields.length)
                         switch_arg = fields[m[1] - 1].searchTerms;
                 } else
-                    libx.log.write("invalid switch_arg '" + s + "', must be %termX or %typeX");
+                    console.log("invalid switch_arg '" + s + "', must be %termX or %typeX");
             }
             for (var i = 0; switch_arg != null && i < caseargs.length; i++) {
                 var re = new RegExp("^" + switch_arg + ":(\\S*)$");
-                var m = re.exec(caseargs[i]);
+                m = re.exec(caseargs[i]);
                 if (m) {
                     repl = m[1];
                     break;
@@ -76,7 +80,7 @@ class Bookmarklet extends Catalog {
         }
 
         // replace %termN with corresponding search terms
-        for (var i = 0; i < fields.length; i++) {
+        for (i = 0; i < fields.length; i++) {
            argtemplate = argtemplate.replace("%term" + (i+1), encodeURIComponent(fields[i].searchTerms), "g");
         }
         // clear out remaining %termN
@@ -97,10 +101,10 @@ class Bookmarklet extends Catalog {
         var join;
         var joinre = /%JOIN{(([^}]+(\}\{)?)+)}/i;
         while ((join = argtemplate.match(joinre)) != null) {
-            var caseargs = join[1].split("}{");
+            caseargs = join[1].split("}{");
             var joiner = caseargs[0];
-            var repl = "";
-            for (var i = 1; i < caseargs.length; i++) {
+            repl = "";
+            for (i = 1; i < caseargs.length; i++) {
                 var ca = caseargs[i].split("|");
                 if (searchField2Term[ca[0]]) {
                     if (repl != "")
@@ -118,7 +122,7 @@ class Bookmarklet extends Catalog {
         }
 
         // clear out other %values if defined
-        for (var option in libx.edition.searchoptions) {
+        for (var option in this.searchoptions) {
             // to allow %is, %i, and %issue require that label be followed by a non-letter
             // XXX not very robust.
             argtemplate = argtemplate.replace(new RegExp("%" + option + "(?![a-zA-Z0-9])"), "", "g");

@@ -25,7 +25,7 @@
  *	Base class for all catalogs
  *	@class
  */
-class Catalog {
+export default class Catalog {
 	/**
 	 *	Specifies whether the catalog should down convert ISBN-13
 	 *	@property downconvertisbn13
@@ -205,5 +205,3 @@ class Catalog {
 	 */
     previewers = {}
 }
-
-export default Catalog

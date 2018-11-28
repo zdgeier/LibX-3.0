@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Formik, Form, FastField as Field } from 'formik';
 import Button from '@material-ui/core/Button';
 import MaterialInput from '../../components/MaterialInput';
-import { handleFetchEdition, handleSelectDrawer } from '../../actions'
+import { handleFetchEdition } from '../../actions'
 import { connect } from 'react-redux'
 
 const styles = theme => ({

@@ -21,6 +21,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 import Catalog from '../catalog';
+
 /**
  * 	Google Scholar Catalog Implementation
  *	@name libx.catalog.factory.scholar

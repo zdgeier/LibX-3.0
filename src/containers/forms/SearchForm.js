@@ -5,8 +5,22 @@ import { withStyles } from "@material-ui/core/styles";
 import { Formik, Field, Form } from "formik";
 import Button from "@material-ui/core/Button";
 import MaterialInput from "../../components/MaterialInput";
-import Scholar from '../../util/catalog/factory/scholar';
+//import { CatalogFactory } from '../../util/catalog/catalog'
 import { Select, MenuItem } from "@material-ui/core";
+
+
+import Scholar from '../../util/catalog/factory/scholar'
+import Bookmarklet from '../../util/catalog/factory/bookmarklet'
+
+const CatalogFactory = (catalogName, url, searchoptions) => {
+    console.dir({catalogName, url, searchoptions})
+    switch (catalogName) {
+        case 'scholar':
+            return new Scholar(url);
+        case 'bookmarklet':
+            return new Bookmarklet(url, searchoptions);
+    }
+}
 
 const styles = theme => ({
   container: {
@@ -24,7 +38,7 @@ const styles = theme => ({
 });
 
 const getURL = (edition) => {
-  if (edition.catalogs === undefined || edition.catalogs[4].scolar === undefined) {
+  if (edition.catalogs === undefined || edition.catalogs[4].scholar === undefined) {
     return null;
   }
   else {
@@ -51,12 +65,10 @@ const getSearchFields = (catalogIndex, catalogs, labels) => {
 }
 
 const getInitialSearchValues = (catalogOptions) => {
-  console.dir(catalogOptions)
   var initialSearchValues = {catalogIndex: 0}
   for(var i = 0; i < catalogOptions.length; i++) {
     initialSearchValues[catalogOptions[i].value] = "";
   }
-  console.dir(initialSearchValues)
   return initialSearchValues;
 }
 
@@ -76,7 +88,16 @@ class SearchForm extends React.Component {
   }
 
   submitSearch = (values) => {
-    console.dir(values)
+    console.dir(this.state.catalogIndex)
+    var currCatalog = this.props.catalogs[this.state.catalogIndex];
+    console.dir(this.props.catalogs)
+    console.dir(Object.keys(currCatalog)[0]);
+    var catalogName = Object.keys(currCatalog)[0];
+    var url = currCatalog[Object.keys(currCatalog)[0]].url;
+    var m = CatalogFactory(catalogName, url, this.props.searchoptions);
+    browser.tabs.create({
+      url: m.makeAdvancedSearch(getSearchObject(values))
+    });
   }
 
   render() {
