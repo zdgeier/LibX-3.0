@@ -6,6 +6,7 @@ import { Formik, Field, Form } from "formik";
 import Button from "@material-ui/core/Button";
 import MaterialInput from "../../components/MaterialInput";
 import Scholar from '../../util/catalog/factory/scholar';
+import { Select, MenuItem } from "@material-ui/core";
 
 const styles = theme => ({
   container: {
@@ -49,30 +50,56 @@ const getSearchFields = (catalogIndex, catalogs, labels) => {
       component={MaterialInput} />)
 }
 
-const getInitialSearchValues = (catalogIndex, catalogs) => {
-  var currCatalog = catalogs[catalogIndex];
-  var catalogOptions = currCatalog[Object.keys(currCatalog)[0]].options.split(";");
+const getInitialSearchValues = (catalogOptions) => {
   console.dir(catalogOptions)
-
-  var initialSearchValues = {}
+  var initialSearchValues = {catalogIndex: 0}
   for(var i = 0; i < catalogOptions.length; i++) {
-    initialSearchValues[catalogOptions[i]] = "";
+    initialSearchValues[catalogOptions[i].value] = "";
   }
   console.dir(initialSearchValues)
   return initialSearchValues;
 }
 
 class SearchForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {catalogIndex: 0}
+  }
+
+  handleChange = (event, values, setFieldValue) => {
+    console.dir(values)
+    console.dir(setFieldValue)
+    for (var value in values) {
+      setFieldValue(value, "", true);
+    }
+    this.setState({catalogIndex: event.target.value})
+  }
+
+  submitSearch = (values) => {
+    console.dir(values)
+  }
+
   render() {
     console.dir(this.props.catalogs)
     return (
       <div className="SearchForm">
         <Formik
-          initialValues = {getInitialSearchValues(this.props.catalogIndex, this.props.catalogs)}
-          onSubmit = {this.props.handleSubmit}
-          render = {() => (
+          initialValues = {getInitialSearchValues(this.props.searchoptions)}
+          onSubmit = {this.submitSearch}
+          render = {({ values, setFieldValue }) => (
             <Form>
-              {getSearchFields(this.props.catalogIndex, this.props.catalogs, this.props.searchoptionlabels)}
+              <Select
+                  value = {this.state.catalogIndex}
+                  onChange = {(event) => this.handleChange(event, values, setFieldValue)}
+                  inputProps={{
+                    name: 'catalog',
+                    id: 'catalog-select',
+                  }}>
+                {this.props.catalogs.map((value, index) => 
+                  <MenuItem key={index} value={index}>{Object.values(value)[0].name}</MenuItem>
+                )}
+              </Select>
+              {getSearchFields(this.state.catalogIndex, this.props.catalogs, this.props.searchoptionlabels)}
               <Button type="submit" className="btn btn-default">Submit</Button>
             </Form>
           )}
