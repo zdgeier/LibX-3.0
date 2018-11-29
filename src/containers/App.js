@@ -13,7 +13,7 @@ class App extends React.Component {
   static propTypes = {
     edition: PropTypes.object.isRequired
   }
-
+  
   render() {
     if (!("name" in this.props.edition)) {
       return (
@@ -27,7 +27,7 @@ class App extends React.Component {
     else {
       return (
         <div className='App'>
-          <MainDrawer title='LibX'>
+          <MainDrawer title={this.props.edition.name.short}>
             <SearchForm title='Search' icon={<SearchIcon/>}/>
             <LinksPage title='Links' icon={<LinksIcon/>}/>
             <Settings title='Settings' icon={<SettingsIcon/>}/>

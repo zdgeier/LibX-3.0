@@ -1,3 +1,11 @@
+/*
+ * TODO: 
+ * Refactor SearchForm 
+ * Add cleaner edition creation
+ * Fix catalog loading on startup
+ * Add more better dropdown names
+ */
+
 import React from 'react'
 import { render } from 'react-dom'
 import { createStore, applyMiddleware } from 'redux'

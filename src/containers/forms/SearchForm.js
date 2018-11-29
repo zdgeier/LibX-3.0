@@ -104,7 +104,7 @@ class SearchForm extends React.Component {
                   value = {this.state.catalogIndex}
                   onChange = {(event) => this.handleChange(event, values, setFieldValue)}
                   className={this.props.classes.select}
-                  input={<OutlinedInput name="catalog" id="catalog-select"/>}
+                  input={<OutlinedInput labelWidth={0} name="catalog" id="catalog-select"/>}
                   inputProps={{name: 'catalog', id: 'catalog-select'}}>
                 {this.props.catalogs.map((value, index) => 
                   <MenuItem key={index} value={index}>{Object.values(value)[0].name}</MenuItem>

@@ -1,11 +1,3 @@
-/**
- * TODO:
- * Database dropdown
- * proxy
- * fix startup loading (what if no network)
- *    we need to try update sequence, graceful fail
- */
-
 import xml2js from 'xml2js'
 import parseStringXML from '../util/xpath'
 
