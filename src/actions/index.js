@@ -29,7 +29,7 @@ export const handleFetchEdition = (edition) => {
       if (edition == null) { // on open
         return getLocalEdition(); 
       }
-      else { 
+      else {
         return getRemoteEdition(edition);
       }
     }, 

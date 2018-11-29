@@ -4,8 +4,9 @@ import { withStyles } from '@material-ui/core/styles';
 import { Formik, Form, FastField as Field } from 'formik';
 import Button from '@material-ui/core/Button';
 import MaterialInput from '../../components/MaterialInput';
-import { handleFetchEdition } from '../../actions'
-import { connect } from 'react-redux'
+import { handleFetchEdition } from '../../actions';
+import { connect } from 'react-redux';
+import AutosuggestSearch from '../../components/AutosuggestSearch';
 
 const styles = theme => ({
   container: {
@@ -17,41 +18,46 @@ const styles = theme => ({
     marginRight: theme.spacing.unit,
     width: 200
   },
+  defaultMargin: {
+    margin: theme.spacing.unit,
+  },
   menu: {
     width: 200
   }
 });
 
-const SettingsForm = ({ onSubmit }) => {
+const SettingsForm = ({ onSubmit, classes }) => {
   return (
-    <div className="SettingsForm">
+    <div>
       <Formik
       displayName="SettingsForm"
       onSubmit={onSubmit}
       initialValues={initialSettingsValues}
-      render={({ errors, dirty, isSubmitting }) => (
+      render={() => (
         <Form>
-          <Field name="edition" label="Edition" component={MaterialInput} />
+          <Field name="edition-auto" label="Edition" className={classes.defaultMargin} component={AutosuggestSearch} onSubmit={onSubmit}/>
+          <Field name="edition" label="Edition" className={classes.defaultMargin} component={MaterialInput} />
           <Button
             type="submit"
-            className="btn btn-default">Submit</Button>
+            className={classes.defaultMargin}>Submit</Button>
         </Form>
       )}
       />
-      
       <Button
         type="clear"
-        className="btn btn-default" onClick={clearStorage}>Clear Storage</Button>
+        className={classes.defaultMargin} onClick={clearStorage}>Clear Storage</Button>
     </div>
   );
 }
 
 SettingsForm.propTypes = {
-  onSubmit: PropTypes.func
+  onSubmit: PropTypes.func,
+  classes: PropTypes.object
 }
 
 const clearStorage = () => {
   browser.storage.local.clear();
+  window.close();
 }
 
 const initialSettingsValues = {
@@ -60,6 +66,7 @@ const initialSettingsValues = {
 
 const mapDispatchToProps = dispatch => ({
   onSubmit: (values) => {
+    console.dir(values)
     dispatch(handleFetchEdition(values.edition));
   }
 })
