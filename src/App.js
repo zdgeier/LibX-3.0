@@ -1,70 +1,39 @@
 import React, { Component } from 'react';
-import './App.css';
-import MiniDrawer from "./MiniDrawer";
-import Typography from '@material-ui/core/Typography';
-import SettingsIcon from '@material-ui/icons/Settings';
-import SearchIcon from '@material-ui/icons/Search';
-import LinksIcon from '@material-ui/icons/Link';
+import Main from './Main';
 import AutosuggestSearch from "./AutosuggestSearch";
-
-const Lorem = (temp) => {
-  return (
-      <div>
-        <AutosuggestSearch/>
-        <Typography paragraph> Lorem {temp} </Typography>
-      </div>
-  );
-};
-
-const Ipsum = (temp) => {
-  return (
-      <Typography paragraph> Ipsum {temp} </Typography>
-  );
-};
-
-const Dolor = (temp) => {
-  return (
-      <Typography paragraph> Dolor {temp} </Typography>
-  );
-};
-
-const pages = [
-  {icon: <SearchIcon />, title: 'Search', pageContent: Lorem},
-  {icon: <LinksIcon />, title: 'Links', pageContent: Ipsum},
-  {icon: <SettingsIcon />, title: 'Settings', pageContent: Dolor},
-];
-
-const listItems = pages.map((page) => {
-    return {icon: page.icon, text: page.title};
-});
+import Typography from '@material-ui/core/Typography';
+import './App.css';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       edition: null,
-      selectedPage: 0,
     }
   }
 
-  drawerOnClick = (index) => {
-    this.setState({
-      edition: this.state.edition,
-      selectedPage: index,
-    });
+  setEdition = (editionURL) => {
+      this.setState({
+          edition: editionURL,
+      })
   };
 
   render() {
-    return (
-      <div className="App">
-        <MiniDrawer
-            drawerOnClick={this.drawerOnClick}
-            listItems={listItems}
-        >
-          {new pages[this.state.selectedPage].pageContent(1)}
-        </MiniDrawer>
-      </div>
-    );
+      if (this.state.edition === null) {
+          return (
+              <div>
+                  <AutosuggestSearch onClick={this.setEdition}/>
+                  <Typography paragraph>{this.state.edition}</Typography>
+              </div>
+          );
+      }
+      else {
+          return (
+              <div className="App">
+                  <Main edition={this.state.edition} />
+              </div>
+          );
+      }
   }
 }
 

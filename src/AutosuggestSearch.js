@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
+import match from 'autosuggest-highlight/match';
+import parse from 'autosuggest-highlight/parse';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
@@ -33,17 +35,19 @@ const styles = theme => ({
 });
 
 class AutosuggestSearch extends React.Component {
-  state = {
-    single: '',
-    suggestions: [],
-  };
+    constructor(props) {
+        super(props);
+        this.state = {
+            single: '',
+            suggestions: [],
+        };
+    }
+
   
   renderSuggestion = (suggestion, { query, isHighlighted }) => {
-    //const matches = match(suggestion.label, query);
-    //const parts = parse(suggestion.label, matches);
-      const matches = null;
-      const parts = [];
-  
+    const matches = match(suggestion.label, query);
+    const parts = parse(suggestion.label, matches);
+
     return (
       <MenuItem 
           selected={isHighlighted} 
@@ -55,8 +59,8 @@ class AutosuggestSearch extends React.Component {
                   return response.json();
               })
               .then((json) => {
-                  console.log(json.revisions.live.config)
-                  this.props.fetchEdition(json.revisions.live.config)
+                  console.log(json.revisions.live.config);
+                  this.props.setEdition(json.revisions.live.config);
               })
           }}
           >
@@ -141,8 +145,7 @@ class AutosuggestSearch extends React.Component {
 
 AutosuggestSearch.propTypes = {
     classes: PropTypes.object.isRequired,
-    fetchEdition: PropTypes.func
+    setEdition: PropTypes.func,
 };
 
-  
 export default withStyles(styles)(AutosuggestSearch);
