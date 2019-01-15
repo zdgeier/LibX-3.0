@@ -1,54 +1,68 @@
-# React / ES6 Popup Example
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## What it does
+## Available Scripts
 
-This is an example of creating a browser action
-[popup](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Add_a_button_to_the_toolbar#Adding_a_popup)
-UI in [React][react] and [ES6](http://es6-features.org/) JavaScript.
+In the project directory, you can run:
 
-## What it shows
+### `npm start`
 
-* How to bundle [React][react] and any other [NodeJS][nodejs] module into an
-  extension.
-* How to transpile code that is not supported natively in
-  a browser such as
-  [import / export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import)
-  syntax and [JSX](https://facebook.github.io/react/docs/jsx-in-depth.html).
-* How to continuously build code as you edit files.
-* How to customize [web-ext][web-ext] for your extension's specific needs.
-* How to structure your code in reusable ES6 modules.
+Runs the app in the development mode.<br>
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-## Usage
+The page will reload if you make edits.<br>
+You will also see any lint errors in the console.
 
-First, you need to change into the example subdirectory and install all
-[NodeJS][nodejs] dependencies with [npm](http://npmjs.com/) or
-[yarn](https://yarnpkg.com/):
+### `npm test`
 
-    npm install
+Launches the test runner in the interactive watch mode.<br>
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-Start the continuous build process to transpile the code into something that
-can run in Firefox or Chrome:
+### `npm run build`
 
-    npm run build
+Builds the app for production to the `build` folder.<br>
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-This creates a WebExtension in the `extension` subdirectory.
-Any time you edit a file, it will be rebuilt automatically.
+The build is minified and the filenames include the hashes.<br>
+Your app is ready to be deployed!
 
-In another shell window, run the extension in Firefox using a wrapper
-around [web-ext][web-ext]:
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-    npm start
+### `npm run eject`
 
-Any time you edit a file, [web-ext][web-ext] will reload the extension
-in Firefox. To see the popup, click the watermelon icon from the browser bar.
-Here is what it looks like:
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-![popup screenshot](screenshots/popup.png "React popup screenshot")
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-[react]: https://facebook.github.io/react/
-[nodejs]: https://nodejs.org/en/
-[web-ext]: https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Getting_started_with_web-ext
+Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-## Icons
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-The icon for this extension is provided by [icons8](https://icons8.com/).
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+
+### Analyzing the Bundle Size
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+
+### Making a Progressive Web App
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+
+### Advanced Configuration
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+
+### Deployment
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+
+### `npm run build` fails to minify
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
