@@ -16,7 +16,7 @@
     "webpack-cli": "^3.2.1"
   },
   "scripts": {
-    "build": "webpack -w --display-error-details --progress --colors",
+    "build": "webpack -d -w --display-error-details --progress --colors",
     "start": "web-ext run --firefox=firefoxdeveloperedition -s extension/"
   },
   "eslintConfig": {

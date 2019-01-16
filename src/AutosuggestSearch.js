@@ -1,146 +1,139 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
-import match from 'autosuggest-highlight/match';
-import parse from 'autosuggest-highlight/parse';
-import Paper from '@material-ui/core/Paper';
-import MenuItem from '@material-ui/core/MenuItem';
-import { withStyles } from '@material-ui/core/styles';
 
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-  },
-  container: {
-    position: 'relative',
-  },
-  suggestionsContainerOpen: {
-    position: 'absolute',
-    zIndex: 1,
-    marginTop: theme.spacing.unit,
-    left: 0,
-    right: 0,
-  },
-  suggestion: {
-    display: 'block',
-  },
-  suggestionsList: {
-    margin: 0,
-    padding: 0,
-    listStyleType: 'none',
-  },
-  divider: {
-    height: theme.spacing.unit * 2,
-  },
-});
+const languages = [
+    {
+        name: 'C',
+        year: 1972
+    },
+    {
+        name: 'C#',
+        year: 2000
+    },
+    {
+        name: 'C++',
+        year: 1983
+    },
+    {
+        name: 'Clojure',
+        year: 2007
+    },
+    {
+        name: 'Elm',
+        year: 2012
+    },
+    {
+        name: 'Go',
+        year: 2009
+    },
+    {
+        name: 'Haskell',
+        year: 1990
+    },
+    {
+        name: 'Java',
+        year: 1995
+    },
+    {
+        name: 'Javascript',
+        year: 1995
+    },
+    {
+        name: 'Perl',
+        year: 1987
+    },
+    {
+        name: 'PHP',
+        year: 1995
+    },
+    {
+        name: 'Python',
+        year: 1991
+    },
+    {
+        name: 'Ruby',
+        year: 1995
+    },
+    {
+        name: 'Scala',
+        year: 2003
+    }
+];
+
+// https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
+function escapeRegexCharacters(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function getSuggestions(value) {
+    const escapedValue = escapeRegexCharacters(value.trim());
+
+    if (escapedValue === '') {
+        return [];
+    }
+
+    const regex = new RegExp('^' + escapedValue, 'i');
+
+    return languages.filter(language => regex.test(language.name));
+}
+
+function getSuggestionValue(suggestion) {
+    return suggestion.name;
+}
+
+function renderSuggestion(suggestion) {
+    return (
+        <span>{suggestion.name}</span>
+    );
+}
 
 class AutosuggestSearch extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
+
         this.state = {
-            single: '',
-            suggestions: [],
+            value: '',
+            suggestions: []
         };
     }
 
-  
-  renderSuggestion = (suggestion, { query, isHighlighted }) => {
-    const matches = match(suggestion.label, query);
-    const parts = parse(suggestion.label, matches);
-
-    return (
-      <MenuItem 
-          selected={isHighlighted} 
-          component="div"
-          onClick={(event) => {
-              console.dir(event.target.textContent)
-              fetch(`http://libx.org/editions/config/${event.target.textContent}`)
-              .then((response) => {
-                  return response.json();
-              })
-              .then((json) => {
-                  console.log(json.revisions.live.config);
-                  this.props.setEdition(json.revisions.live.config);
-              })
-          }}
-          >
-        <div>
-          {parts.map((part, index) => {
-            return part.highlight ? (
-              <span key={String(index)} style={{ fontWeight: 500 }}>
-                {part.text}
-              </span>
-            ) : (
-              <strong key={String(index)} style={{ fontWeight: 300 }}>
-                {part.text}
-              </strong>
-            );
-          })}
-        </div>
-      </MenuItem>
-    );
-  }
-
-  handleSuggestionsFetchRequested = ({ value }) => {
-    fetch(`http://libx.org/editions/search?q=${value}`)
-    .then((response) => {
-        return response.json();
-    })
-    .then((json) => {
-        console.dir(json)
+    onChange = (event, { newValue, method }) => {
         this.setState({
-            suggestions: json.map(entry => ({label: entry.id}))
+            value: newValue
         });
-    })
-  };
-
-  handleSuggestionsClearRequested = () => {
-    this.setState({
-      suggestions: [],
-    });
-  };
-
-  handleChange = name => (event, { newValue }) => {
-    this.setState({
-      [name]: newValue,
-    });
-  };
-
-  render() {
-    const { classes } = this.props;
-
-    const autosuggestProps = {
-      suggestions: this.state.suggestions,
-      onSuggestionsFetchRequested: this.handleSuggestionsFetchRequested,
-      onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
-      renderSuggestion: this.renderSuggestion,
     };
 
-    return (
-      <div className={classes.root}>
-        <Autosuggest
-          {...autosuggestProps}
-          inputProps={{
-            classes,
-            placeholder: 'Search for a LibX edition',
-            value: this.state.single,
-            onChange: this.handleChange('single'),
-          }}
-          theme={{
-            container: classes.container,
-            suggestionsContainerOpen: classes.suggestionsContainerOpen,
-            suggestionsList: classes.suggestionsList,
-            suggestion: classes.suggestion,
-          }}
-          renderSuggestionsContainer={options => (
-            <Paper {...options.containerProps} square>
-              {options.children}
-            </Paper>
-          )}
-        />
-      </div>
-    )
-  }
+    onSuggestionsFetchRequested = ({ value }) => {
+        this.setState({
+            suggestions: getSuggestions(value)
+        });
+    };
+
+    onSuggestionsClearRequested = () => {
+        this.setState({
+            suggestions: []
+        });
+    };
+
+    render() {
+        const { value, suggestions } = this.state;
+        const inputProps = {
+            placeholder: "Type 'c'",
+            value,
+            onChange: this.onChange
+        };
+
+        return (
+            <Autosuggest
+                suggestions={suggestions}
+                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                getSuggestionValue={getSuggestionValue}
+                renderSuggestion={renderSuggestion}
+                inputProps={inputProps} />
+        );
+    }
 }
 
 AutosuggestSearch.propTypes = {
@@ -148,4 +141,4 @@ AutosuggestSearch.propTypes = {
     setEdition: PropTypes.func,
 };
 
-export default withStyles(styles)(AutosuggestSearch);
+export default AutosuggestSearch;
