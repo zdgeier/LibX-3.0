@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Main from './Main';
 import AutosuggestSearch from "./AutosuggestSearch";
 import Typography from '@material-ui/core/Typography';
-import './App.css';
 
 class App extends Component {
   constructor(props) {
